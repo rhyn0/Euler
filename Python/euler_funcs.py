@@ -223,30 +223,32 @@ def euler9(num=1000):
     """
 
     # brute force, dont need to double check previous (a,b) combos
-    # for a in range(1, n):
-    #     for b in range(a, n):
+    # for a in range(1, num):
+    #     for b in range(a, num):
     #         c = (a ** 2 + b ** 2) ** 0.5
     #         if c % 1 == 0:
     #             c = int(c)
-    #             if a + b + c == n:
+    #             if a + b + c == num:
     #                 print(a, b, c)
     #                 return a * b * c
 
     # math it a bit, can manipulate starter info a + b + c = 1000 into
     # (500000 - 1000 * b) / (1000 - b) = a; thus can just check a
-    # for b in range(1, n):
-    #     a = ((n ** 2) / 2 - n * b) / (n - b)
+    # for b in range(1, num):
+    #     a = ((num ** 2) / 2 - num * b) / (num - b)
     #     if a % 1 == 0:
     #         a = int(a)
-    #         #print(a, b, int(a*a + b*b) ** 0.5)
-    #         return a * b * int((a*a + b*b) ** 0.5)
+    #         # print("testing", a, b, int(a * a + b * b) ** 0.5)
+    #         return a * b * int((a * a + b * b) ** 0.5)
 
     # using Euclid Algorithm, where all pythagorean triples are in relation to integers m, n, k
     # https://en.wikipedia.org/wiki/Pythagorean_triple#Generating_a_triple
     # b = 2mn; a = m^2 -n^2; c = m^2 + n^2;
+    # a + b + c = num
+    # 2mn + 2m^2 = num
     for m in range(1, num):
         for n in range(1, m):
-            if m * (m + n) == n / 2:
+            if m * (m + n) == num / 2:
                 return 2 * m * n * (m ** 2 - n ** 2) * (m ** 2 + n ** 2)
 
 
@@ -754,7 +756,7 @@ def euler18() -> int:
         memo[(i, j)] = given[i][j] + max(
             helper(i + 1, j, memo), helper(i + 1, j + 1, memo)
         )
-        print(f"level{i} returning {memo[(i,j)]}")
+        # print(f"level{i} returning {memo[(i,j)]}")
         return memo[(i, j)]
 
     return given[0][0] + max(helper(1, 0), helper(1, 1))
@@ -781,13 +783,13 @@ def euler19(n: str = "2000") -> int:
     #     for month in range(1, 13):
     #         if datetime.date(year, month, 1).isoweekday() == 7:
     #             sundays += 1
-    
+
     # just use a datetime module to find what weekday the first of each month was
-    return sum([
-        datetime.date(year, month, 1).isoweekday() == 7
-        for year in range(1901, int(n.split("-")[0]) + 1)
-        for month in range(1, 13)
-    ])
-
-
+    return sum(
+        [
+            datetime.date(year, month, 1).isoweekday() == 7
+            for year in range(1901, int(n.split("-")[0]) + 1)
+            for month in range(1, 13)
+        ]
+    )
 

@@ -1,4 +1,4 @@
-from euler_funcs import *
+from Python.euler_funcs import *
 import unittest
 
 
@@ -85,7 +85,7 @@ class TestEuler(unittest.TestCase):
 
     # Test Euler 9
     def test_euler9_01(self):
-        self.assertTrue(type(euler9()) == int)
+        self.assertEqual(type(euler9()), int)
 
     def test_euler9_02(self):
         self.assertTrue(euler9() == 31875000)

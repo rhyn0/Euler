@@ -1,4 +1,4 @@
-from euler_funcs import *
+from Starter.euler_funcs import *
 import unittest
 
 
