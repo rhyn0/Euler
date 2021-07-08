@@ -1,5 +1,5 @@
 import os, sys
-from Python.euler_funcs import *
+from euler_funcs import *
 
 functions = {
     "1": euler1,
@@ -21,6 +21,9 @@ functions = {
     "17": euler17,
     "18": euler18,
     "19": euler19,
+    "20": euler20,
+    "21": euler21,
+    "22": euler22,
 }
 # https://projecteuler.net/
 

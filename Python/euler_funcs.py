@@ -793,3 +793,136 @@ def euler19(n: str = "2000") -> int:
         ]
     )
 
+
+def euler20(n=100) -> int:
+    """Factorial digit sum
+
+    Factorial of n! returns an int, return the sum of the digits of that int
+    For n = 10, euler20(n) -> 27
+
+    Parameters
+    ----------
+    n : int, optional
+        by default 100
+
+    Returns
+    -------
+    int
+    """
+    return sum([int(s) for s in str(math.factorial(n))])
+
+
+def euler21(n=10000) -> int:
+    """Amicable numbers
+
+    Let d(n) be defined as the sum of proper divisors of n. 
+    If d(a) = b, d(b) = a, and a != b, then a and b are an amicable pair, or each are an amicable number.
+    Return the sum of all amicable numbers less than n
+    For n = 10, euler21(n) -> 0
+
+    Parameters
+    ----------
+    n : int, optional
+         by default 10000
+
+    Returns
+    -------
+    int
+    """
+    # have to find sum of all the divisors of each number that we stop at
+    # 1 is not a proper divisor of itself, since they are equal
+    memo = {1: 0}
+
+    def sum_divisors(num):
+        start = 1
+        if num not in memo:
+            # everything is divisible by 1, but can not include n in proper divisors
+            root = int(math.sqrt(num))
+            if num % root == 0:
+                # if perfect square, can only count its divisor once
+                start += root
+                root -= 1
+            memo[num] = start + sum(
+                [
+                    s + num // s
+                    for s in range(2, int(math.sqrt(num)) + 1)
+                    if num % s == 0
+                ]
+            )
+        return memo[num]
+
+    # for each number, we find the sum of the divisors
+    # then if the sum of the divisors of that sum is equal to the number we store them
+    # d(d(a)) = a and we want all 'a' that satisfy that
+    return sum(
+        [
+            a
+            for a in range(2, n)
+            if sum_divisors(sum_divisors(a)) == a and sum_divisors(a) != a
+        ]
+    )
+
+
+def euler22() -> int:
+    """Names Scores
+
+    Using the provided text file '../data/p022_names.txt' read in the names, sort the names
+    obtain the alphabetical value for a name and multiply by its index. Return the sum of all the name scores
+    e.g. the name 'COLIN' at index 938, would have alphabetical value 53 and then be multiplied by 938
+
+    Returns
+    -------
+    int
+    """
+    # ALONSO - 1 + 12 + 15 + 14 + 19 + 15 = 76
+    def name_val(s: str) -> int:
+        # all names are capital, so use 64 in ascii value
+        return sum([ord(c) - 64 for c in s if c != '"'])
+
+    with open("data/p022_names.txt", "r") as f:
+        data = f.read()  # it is one line
+    data = sorted(data.split(","))
+    return sum([i * name_val(name) for i, name in enumerate(data, start=1)])
+
+
+def euler23(n=28123) -> int:
+    """Non-abundant sums
+
+    Return the sum of all positive integers, less than equal to n, which cannot be written as the sum of two abundant numbers
+    An abundant number is one whose proper divisors sum to a value greater than the number. e.g. 12 is abundant, 1 + 2 + 3 + 4 + 6 = 16
+    Mathematical analysis show that all integers greater than 28123 can be written as a sum of two abundant numbers
+    # ! Need a link to that ^
+
+    Parameters
+    ----------
+    n : int, optional
+        limit to find abundant number under, by default 28123
+
+    Returns
+    -------
+    int
+    """
+    # 12 is the smallest abundant number, so 24 is the smallest number that can be written as a sum of abundant numbers
+    start = sum(range(1, 24))
+    memo = {1: 0}
+
+    def sum_divisors(num):
+        if num not in memo:
+            # everything is divisible by 1, but can not include n in proper divisors
+            memo[num] = 1 + sum(
+                [
+                    s + int(num / s)
+                    for s in range(2, int(math.sqrt(num)) + 1)
+                    if num % s == 0
+                ]
+            )
+        return memo[num]
+
+    pass
+
+    for i in range(25, n + 1):
+        if i % 2 == 1:
+            start += i
+        else:
+            div = i // 2
+

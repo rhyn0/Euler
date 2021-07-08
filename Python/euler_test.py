@@ -1,9 +1,9 @@
-from Python.euler_funcs import *
+from typing import ClassVar, List
+from euler_funcs import *
 import unittest
 
 
-class TestEuler(unittest.TestCase):
-    # Test Euler 1
+class TestEuler1(unittest.TestCase):
     def test_euler1_01(self):
         self.assertTrue(type(euler1()) == int)
 
@@ -13,7 +13,8 @@ class TestEuler(unittest.TestCase):
     def test_euler1_03(self):
         self.assertEqual(euler1(10), 23)
 
-    # Test Euler 2
+
+class TestEuler2(unittest.TestCase):
     def test_euler2_01(self):
         self.assertTrue(type(euler2()) == int)
 
@@ -23,7 +24,8 @@ class TestEuler(unittest.TestCase):
     def test_euler2_03(self):
         self.assertEqual(euler2(10), 10)
 
-    # Test Euler 3
+
+class TestEuler3(unittest.TestCase):
     def test_euler3_01(self):
         self.assertTrue(type(euler3()) == int)
 
@@ -36,14 +38,16 @@ class TestEuler(unittest.TestCase):
     def test_euler3_04(self):
         self.assertEqual(euler3(0), 0)
 
-    # Test Euler 4
+
+class TestEuler4(unittest.TestCase):
     def test_euler4_01(self):
         self.assertTrue(type(euler4()) == int)
 
     def test_euler4_02(self):
         self.assertTrue(euler4() == 906609)
 
-    # Test Euler 5
+
+class TestEuler5(unittest.TestCase):
     def test_euler5_01(self):
         self.assertTrue(type(euler5()) == int)
 
@@ -53,7 +57,8 @@ class TestEuler(unittest.TestCase):
     def test_euler5_03(self):
         self.assertEqual(euler5(10), 2520)
 
-    # Test Euler 6
+
+class TestEuler6(unittest.TestCase):
     def test_euler6_01(self):
         self.assertTrue(type(euler6()) == int)
 
@@ -63,7 +68,8 @@ class TestEuler(unittest.TestCase):
     def test_euler6_03(self):
         self.assertEqual(euler6(10), 2640)
 
-    # Test Euler 7
+
+class TestEuler7(unittest.TestCase):
     def test_euler7_01(self):
         self.assertTrue(type(euler7()) == int)
 
@@ -73,7 +79,8 @@ class TestEuler(unittest.TestCase):
     def test_euler7_03(self):
         self.assertEqual(euler7(10), 29)
 
-    # Test Euler 8
+
+class TestEuler8(unittest.TestCase):
     def test_euler8_01(self):
         self.assertTrue(type(euler8()) == int)
 
@@ -83,7 +90,8 @@ class TestEuler(unittest.TestCase):
     def test_euler8_03(self):
         self.assertEqual(euler8(4), 5832)
 
-    # Test Euler 9
+
+class TestEuler9(unittest.TestCase):
     def test_euler9_01(self):
         self.assertEqual(type(euler9()), int)
 
@@ -93,7 +101,8 @@ class TestEuler(unittest.TestCase):
     def test_euler9_03(self):
         self.assertEqual(euler9(12), 60)
 
-    # Test Euler 10
+
+class TestEuler10(unittest.TestCase):
     def test_euler10_01(self):
         self.assertTrue(type(euler10()) == int)
 
@@ -103,14 +112,16 @@ class TestEuler(unittest.TestCase):
     def test_euler10_03(self):
         self.assertEqual(euler10(10), 17)
 
-    # Test Euler 11
+
+class TestEuler11(unittest.TestCase):
     def test_euler11_01(self):
         self.assertTrue(type(euler11()) == int)
 
     def test_euler11_02(self):
         self.assertTrue(euler11() == 70600674)
 
-    # Test Euler 12
+
+class TestEuler12(unittest.TestCase):
     def test_euler12_01(self):
         self.assertTrue(type(euler12()) == int)
 
@@ -120,7 +131,8 @@ class TestEuler(unittest.TestCase):
     def test_euler12_03(self):
         self.assertEqual(euler12(5), 28)
 
-    # Test Euler 13
+
+class TestEuler13(unittest.TestCase):
     def test_euler13_01(self):
         self.assertTrue(type(euler13()) == str)
 
@@ -130,7 +142,8 @@ class TestEuler(unittest.TestCase):
     def test_euler13_03(self):
         self.assertEqual(euler13(5), "55373")
 
-    # Test Euler 14
+
+class TestEuler14(unittest.TestCase):
     def test_euler14_01(self):
         self.assertTrue(type(euler14()) == int)
 
@@ -140,7 +153,8 @@ class TestEuler(unittest.TestCase):
     def test_euler14_03(self):
         self.assertEqual(euler14(20), 18)
 
-    # Test Euler 15
+
+class TestEuler15(unittest.TestCase):
     def test_euler15_01(self):
         self.assertTrue(type(euler15()) == int)
 
@@ -150,7 +164,8 @@ class TestEuler(unittest.TestCase):
     def test_euler15_03(self):
         self.assertEqual(euler15(10), 184756)
 
-    # Test Euler 16
+
+class TestEuler16(unittest.TestCase):
     def test_euler16_01(self):
         self.assertTrue(type(euler16()) == int)
 
@@ -160,7 +175,8 @@ class TestEuler(unittest.TestCase):
     def test_euler16_03(self):
         self.assertEqual(euler16(100), 115)
 
-    # Test Euler 17
+
+class TestEuler17(unittest.TestCase):
     def test_euler17_01(self):
         self.assertTrue(type(euler17()) == int)
 
@@ -170,14 +186,16 @@ class TestEuler(unittest.TestCase):
     def test_euler17_03(self):
         self.assertEqual(euler17(342), 6117)
 
-    # Test Euler 18, given problem
+
+class TestEuler18(unittest.TestCase):
     def test_euler18_01(self):
         self.assertTrue(type(euler18()) == int)
 
     def test_euler18_02(self):
         self.assertTrue(euler18() == 1074)
 
-    # Test Euler 19
+
+class TestEuler19(unittest.TestCase):
     def test_euler19_01(self):
         self.assertTrue(type(euler19()) == int)
 
@@ -188,5 +206,49 @@ class TestEuler(unittest.TestCase):
         self.assertEqual(euler19("2001"), 173)
 
 
+class TestEuler20(unittest.TestCase):
+    def test_euler20_type(self):
+        self.assertEqual(type(euler20()), int)
+
+    def test_euler20_val(self):
+        self.assertEqual(euler20(), 648)
+
+    def test_euler20_ex(self):
+        self.assertEqual(euler20(10), 27)
+
+
+class TestEuler21(unittest.TestCase):
+    def test_euler21_type(self):
+        self.assertEqual(type(euler21()), int)
+
+    def test_euler21_val(self):
+        self.assertEqual(euler21(), 31626)
+
+    def test_euler21_ex(self):
+        self.assertEqual(euler21(10), 0)
+
+
+class TestEuler22(unittest.TestCase):
+    def test_euler22_type(self):
+        self.assertEqual(type(euler22()), int)
+
+    def test_euler22_val(self):
+        self.assertEqual(euler22(), 871198282)
+
+
+def run_classes(classes: List):
+    # Run only the tests in the specified classes
+
+    loader = unittest.TestLoader()
+
+    suites_list = [loader.loadTestsFromTestCase(cls) for cls in classes]
+
+    big_suite = unittest.TestSuite(suites_list)
+
+    runner = unittest.TextTestRunner()
+    results = runner.run(big_suite)
+
+
 if __name__ == "__main__":
     unittest.main()
+    # run_classes([TestEuler1, TestEuler2])

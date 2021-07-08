@@ -1,5 +1,5 @@
 import os, sys
-from Starter.euler_funcs import *
+from euler_funcs import *
 
 functions = {
     "1": euler1,
