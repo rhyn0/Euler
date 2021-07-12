@@ -134,13 +134,13 @@ class TestEuler12(unittest.TestCase):
 
 class TestEuler13(unittest.TestCase):
     def test_euler13_01(self):
-        self.assertTrue(type(euler13()) == str)
+        self.assertTrue(type(euler13()) == int)
 
     def test_euler13_02(self):
-        self.assertTrue(euler13() == "5537376230")
+        self.assertTrue(euler13() == 5537376230)
 
     def test_euler13_03(self):
-        self.assertEqual(euler13(5), "55373")
+        self.assertEqual(euler13(5), 55373)
 
 
 class TestEuler14(unittest.TestCase):
@@ -236,6 +236,19 @@ class TestEuler22(unittest.TestCase):
         self.assertEqual(euler22(), 871198282)
 
 
+class TestEuler23(unittest.TestCase):
+    num = euler23()
+
+    def test_euler23_type(self):
+        self.assertEqual(type(TestEuler23.num), int)
+
+    def test_euler23_val(self):
+        self.assertEqual(TestEuler23.num, 4179871)
+
+    def test_euler23_ex(self):
+        self.assertEqual(euler23(1000), 240492)
+
+
 def run_classes(classes: List):
     # Run only the tests in the specified classes
 
@@ -251,4 +264,4 @@ def run_classes(classes: List):
 
 if __name__ == "__main__":
     unittest.main()
-    # run_classes([TestEuler1, TestEuler2])
+    # run_classes([TestEuler13])

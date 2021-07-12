@@ -1,13 +1,14 @@
 import math
 import datetime
 
-from numpy import s_
+import numpy as np
 
 
 def euler1(n=1000):
     """
     Multiples of 3 and 5. ProjectEuler defaults to 1000
     """
+    # brute force
     # sum = 0
     # for i in range(3, n, 3):
     #     sum += i
@@ -15,13 +16,15 @@ def euler1(n=1000):
     #     if i % 3 != 0:
     #         sum += i
     # return sum
-    # code heavy way of doing above, can do by using math
-    # sum of arithmetic progression floor(n / d)/2[a + z], where d - difference between terms, a - first term, z - last term
+
+    # can do by using math
+    # sum of arithmetic progression floor(n / d)/2[a + z],
+    # where d - difference between terms, a - first term, z - last term
     n -= 1
     return int(
-        int((n) / 3) / 2 * (3 + n - (n % 3))
-        + int((n) / 5) / 2 * ((n - n % 5) + 5)
-        - int((n) / 15) / 2 * ((n - n % 15) + 15)
+        (n / 3) / 2 * (3 + n - (n % 3))
+        + (n / 5) / 2 * ((n - n % 5) + 5)
+        - (n / 15) / 2 * ((n - n % 15) + 15)
     )
 
 
@@ -222,7 +225,7 @@ def euler9(num=1000):
     Special Pythagorean triplet, a^2 + b^2 = c^2, default case a + b + c = 1000
     """
 
-    # brute force, dont need to double check previous (a,b) combos
+    # brute force, don't need to double check previous (a,b) combos
     # for a in range(1, num):
     #     for b in range(a, num):
     #         c = (a ** 2 + b ** 2) ** 0.5
@@ -385,13 +388,13 @@ def euler12(n=500):
     triangle = 28
     natural = 8
     while 1:
-        divs = 1
+        div = 1
         for i in range(2, int(math.sqrt(triangle)) + 1):
             if triangle % i == 0:
-                divs += 2
+                div += 2
             if triangle == i * i:
-                divs -= 1
-        if divs >= n:
+                div -= 1
+        if div >= n:
             return triangle
         triangle += natural
         natural += 1
@@ -504,7 +507,7 @@ def euler13(n=10):
         20849603980134001723930671666823555245252804609722,
         53503534226472524250874054075591789781264330331690,
     ]
-    return str(sum(given))[:n]
+    return int(str(sum(given))[:n])
 
 
 def euler14(n=1000000) -> int:
@@ -892,37 +895,42 @@ def euler23(n=28123) -> int:
     An abundant number is one whose proper divisors sum to a value greater than the number. e.g. 12 is abundant, 1 + 2 + 3 + 4 + 6 = 16
     Mathematical analysis show that all integers greater than 28123 can be written as a sum of two abundant numbers
     # ! Need a link to that ^
+    Find all abundant numbers up to n, then create sums of those abundant numbers. Then for i up to n, if it is not a sum, add it to total
 
     Parameters
     ----------
     n : int, optional
-        limit to find abundant number under, by default 28123
+        limit to find abundant number up to (inclusive), by default 28123
 
     Returns
     -------
     int
     """
-    # 12 is the smallest abundant number, so 24 is the smallest number that can be written as a sum of abundant numbers
-    start = sum(range(1, 24))
-    memo = {1: 0}
 
-    def sum_divisors(num):
-        if num not in memo:
-            # everything is divisible by 1, but can not include n in proper divisors
-            memo[num] = 1 + sum(
-                [
-                    s + int(num / s)
-                    for s in range(2, int(math.sqrt(num)) + 1)
-                    if num % s == 0
-                ]
-            )
-        return memo[num]
+    def is_abundant(num):
+        copy = num
+        total, p = 1, 2
+        while p * p <= num and num > 1:
+            if num % p == 0:
+                j = p * p
+                num = num // p
+                while num % p == 0:
+                    j *= p
+                    num //= p
+                total *= j - 1
+                total //= p - 1
+            if p == 2:
+                p = 3
+            else:
+                p += 2
+        if num > 1:
+            total *= num + 1
+        return total > 2 * copy
 
-    pass
+    abundant = [i for i in range(2, n + 1) if is_abundant(i)]
+    abundant_sum = set(
+        [abundant[i] + abundant[j] for i in range(len(abundant)) for j in range(i + 1)]
+    )
 
-    for i in range(25, n + 1):
-        if i % 2 == 1:
-            start += i
-        else:
-            div = i // 2
+    return sum([s for s in range(n + 1) if s not in abundant_sum])
 
