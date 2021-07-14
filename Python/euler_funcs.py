@@ -2,6 +2,8 @@ import math
 import datetime
 
 import numpy as np
+import itertools
+import functools
 
 
 def euler1(n=1000):
@@ -894,7 +896,7 @@ def euler23(n=28123) -> int:
     Return the sum of all positive integers, less than equal to n, which cannot be written as the sum of two abundant numbers
     An abundant number is one whose proper divisors sum to a value greater than the number. e.g. 12 is abundant, 1 + 2 + 3 + 4 + 6 = 16
     Mathematical analysis show that all integers greater than 28123 can be written as a sum of two abundant numbers
-    # ! Need a link to that ^
+    ### https://mathschallenge.net/full/sum_of_two_abundant_numbers
     Find all abundant numbers up to n, then create sums of those abundant numbers. Then for i up to n, if it is not a sum, add it to total
 
     Parameters
@@ -910,7 +912,7 @@ def euler23(n=28123) -> int:
     def is_abundant(num):
         copy = num
         total, p = 1, 2
-        while p * p <= num and num > 1:
+        while 1 < p * p <= num:
             if num % p == 0:
                 j = p * p
                 num = num // p
@@ -925,6 +927,8 @@ def euler23(n=28123) -> int:
                 p += 2
         if num > 1:
             total *= num + 1
+        # sum of all divisors - n = sum of proper divisors
+        # rewritten: sum of all divisors = sum of proper divisors + n
         return total > 2 * copy
 
     abundant = [i for i in range(2, n + 1) if is_abundant(i)]
@@ -934,3 +938,46 @@ def euler23(n=28123) -> int:
 
     return sum([s for s in range(n + 1) if s not in abundant_sum])
 
+
+def euler24(n=1000000) -> int:
+    """Lexicographic Permutations
+
+    Return the nth lexicographic permutation of the digits 0 thru 9.
+    In this case I believe lexicographic to also mean increasing.
+
+    Parameters
+    ----------
+    n : int, optional
+        term to be returned, by default 1000000
+
+    Returns
+    -------
+    int
+    """
+    # creating all 3.6 million permutations seems a little troublesome for a computer
+    # return int(
+    #     "".join(sorted(list(itertools.permutations([c for c in "0123456789"])))[n - 1])
+    # )
+    # answer 2783915460
+    perm_count = 0
+
+    def filter_helper(num):
+        nonlocal perm_count
+        if perm_count == (n - 1):
+            return True
+        else:
+            perm_count += 1
+            return False
+
+    # this method might use less memory, but it shows that with lexicographic input to permutations
+    # there is no need to sort the output of it
+    return int(
+        "".join(
+            next(
+                filter(filter_helper, itertools.permutations([c for c in "0123456789"]))
+            )
+        )
+    )
+
+
+print(euler24())
