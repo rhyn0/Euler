@@ -1,10 +1,6 @@
 import math
 import datetime
 
-import numpy as np
-import itertools
-import functools
-
 
 def euler1(n=1000):
     """
@@ -24,9 +20,9 @@ def euler1(n=1000):
     # where d - difference between terms, a - first term, z - last term
     n -= 1
     return int(
-        (n / 3) / 2 * (3 + n - (n % 3))
-        + (n / 5) / 2 * ((n - n % 5) + 5)
-        - (n / 15) / 2 * ((n - n % 15) + 15)
+        (n // 3) / 2 * (3 + n - (n % 3))
+        + (n // 5) / 2 * ((n - n % 5) + 5)
+        - (n // 15) / 2 * ((n - n % 15) + 15)
     )
 
 
@@ -36,13 +32,13 @@ def euler2(n=4000000):
     """
     t1 = t2 = 1
     c = t1 + t2
-    sum = 0
+    total = 0
     while c < n:
-        sum += c
+        total += c
         t1 = t2 + c
         t2 = t1 + c
         c = t1 + t2
-    return sum
+    return total
 
 
 def euler3(n=600851475143):
@@ -72,10 +68,9 @@ def euler4():
     for i in range(999, 100, -1):
         for j in range(990, 100, -11):
             x = str(i * j)
-            if int(x) > biggest:
-                if x == x[::-1]:
-                    # print(x, i, j)
-                    biggest = int(x)
+            if int(x) > biggest and x == x[::-1]:
+                # print(x, i, j)
+                biggest = int(x)
     return biggest
 
 
@@ -210,16 +205,16 @@ def euler8(n=13):
         "05886116467109405077541002256983155200055935729725"
         "71636269561882670428252483600823257530420752963450"
     )
-    max = 0
+    maximum = 0
     for i in range(len(given) - n):
         product_list = [int(char) for char in given[i : i + n]]
         product = 1
         for j in product_list:
             product *= j
-        if product > max:
-            max = product
+        if product > maximum:
+            maximum = product
 
-    return max
+    return maximum
 
 
 def euler9(num=1000):
@@ -286,99 +281,60 @@ def euler11():
     """
     Largest product in a grid, 
     """
+    # fmt: off
+    given = [
+        8, 2, 22, 97, 38, 15, 00, 40, 00, 75, 4, 5, 7, 78, 52, 12, 50, 77, 91, 8,
+        49, 49, 99, 40, 17, 81, 18, 57, 60, 87, 17, 40, 98, 43, 69, 48, 4, 56, 62, 00,
+        81, 49, 31, 73, 55, 79, 14, 29, 93, 71, 40, 67, 53, 88, 30, 3, 49, 13, 36, 65,
+        52, 70, 95, 23, 4, 60, 11, 42, 69, 24, 68, 56, 1, 32, 56, 71, 37, 2, 36, 91,
+        22, 31, 16, 71, 51, 67, 63, 89, 41, 92, 36, 54, 22, 40, 40, 28, 66, 33, 13, 80,
+        24, 47, 32, 60, 99, 3, 45, 2, 44, 75, 33, 53, 78, 36, 84, 20, 35, 17, 12, 50,
+        32, 98, 81, 28, 64, 23, 67, 10, 26, 38, 40, 67, 59, 54, 70, 66, 18, 38, 64, 70,
+        67, 26, 20, 68, 2, 62, 12, 20, 95, 63, 94, 39, 63, 8, 40, 91, 66, 49, 94, 21,
+        24, 55, 58, 5, 66, 73, 99, 26, 97, 17, 78, 78, 96, 83, 14, 88, 34, 89, 63, 72,
+        21, 36, 23, 9, 75, 00, 76, 44, 20, 45, 35, 14, 00, 61, 33, 97, 34, 31, 33, 95,
+        78, 17, 53, 28, 22, 75, 31, 67, 15, 94, 3, 80, 4, 62, 16, 14, 9, 53, 56, 92,
+        16, 39, 5, 42, 96, 35, 31, 47, 55, 58, 88, 24, 00, 17, 54, 24, 36, 29, 85, 57,
+        86, 56, 00, 48, 35, 71, 89, 7, 5, 44, 44, 37, 44, 60, 21, 58, 51, 54, 17, 58,
+        19, 80, 81, 68, 5, 94, 47, 69, 28, 73, 92, 13, 86, 52, 17, 77, 4, 89, 55, 40,
+        4, 52, 8, 83, 97, 35, 99, 16, 7, 97, 57, 32, 16, 26, 26, 79, 33, 27, 98, 66,
+        88, 36, 68, 87, 57, 62, 20, 72, 3, 46, 33, 67, 46, 55, 12, 32, 63, 93, 53, 69,
+        4, 42, 16, 73, 38, 25, 39, 11, 24, 94, 72, 18, 8, 46, 29, 32, 40, 62, 76, 36,
+        20, 69, 36, 41, 72, 30, 23, 88, 34, 62, 99, 69, 82, 67, 59, 85, 74, 4, 36, 16,
+        20, 73, 35, 29, 78, 31, 90, 1, 74, 31, 49, 71, 48, 86, 81, 16, 23, 57, 5, 54,
+        1, 70, 54, 71, 83, 51, 54, 69, 16, 92, 33, 48, 61, 43, 52, 1, 89, 19, 67, 48,
+    ]
+    # fmt: on
+    def sum_direction(i, j: int, direction: str) -> int:
+        if direction == "horiz":
+            return sum(grid[i][j : j + 4])
+        elif direction == "vert":
+            return sum(grid[i : i + 4][j])
+        elif direction == "diag_r":
+            return sum([grid[i + d][j + d] for d in range(4)])
+        else:
+            return sum([grid[i + d][j - d] for d in range(4)])
 
-    given = (
-        "08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08 "
-        "49 49 99 40 17 81 18 57 60 87 17 40 98 43 69 48 04 56 62 00 "
-        "81 49 31 73 55 79 14 29 93 71 40 67 53 88 30 03 49 13 36 65 "
-        "52 70 95 23 04 60 11 42 69 24 68 56 01 32 56 71 37 02 36 91 "
-        "22 31 16 71 51 67 63 89 41 92 36 54 22 40 40 28 66 33 13 80 "
-        "24 47 32 60 99 03 45 02 44 75 33 53 78 36 84 20 35 17 12 50 "
-        "32 98 81 28 64 23 67 10 26 38 40 67 59 54 70 66 18 38 64 70 "
-        "67 26 20 68 02 62 12 20 95 63 94 39 63 08 40 91 66 49 94 21 "
-        "24 55 58 05 66 73 99 26 97 17 78 78 96 83 14 88 34 89 63 72 "
-        "21 36 23 09 75 00 76 44 20 45 35 14 00 61 33 97 34 31 33 95 "
-        "78 17 53 28 22 75 31 67 15 94 03 80 04 62 16 14 09 53 56 92 "
-        "16 39 05 42 96 35 31 47 55 58 88 24 00 17 54 24 36 29 85 57 "
-        "86 56 00 48 35 71 89 07 05 44 44 37 44 60 21 58 51 54 17 58 "
-        "19 80 81 68 05 94 47 69 28 73 92 13 86 52 17 77 04 89 55 40 "
-        "04 52 08 83 97 35 99 16 07 97 57 32 16 26 26 79 33 27 98 66 "
-        "88 36 68 87 57 62 20 72 03 46 33 67 46 55 12 32 63 93 53 69 "
-        "04 42 16 73 38 25 39 11 24 94 72 18 08 46 29 32 40 62 76 36 "
-        "20 69 36 41 72 30 23 88 34 62 99 69 82 67 59 85 74 04 36 16 "
-        "20 73 35 29 78 31 90 01 74 31 49 71 48 86 81 16 23 57 05 54 "
-        "01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48"
-    )
-    grid = []
-    for i in range(20):
-        grid.append(given.split(" ")[20 * i : 20 * i + 20])
-    max = 0
-    orient = None
-    for i in range(len(grid)):
-        for j in range(len(grid[i]) - 3):
-            if (
-                int(grid[i][j])
-                * int(grid[i][j + 1])
-                * int(grid[i][j + 2])
-                * int(grid[i][j + 3])
-            ) > max:
-                max = (
-                    int(grid[i][j])
-                    * int(grid[i][j + 1])
-                    * int(grid[i][j + 2])
-                    * int(grid[i][j + 3])
-                )
-                orient = ("sidways", i, j)
+    dimension = 20
+    grid = [given[dimension * i : dimension * i + dimension] for i in range(20)]
 
-    for i in range(len(grid)):
-        for j in range(len(grid[i]) - 3):
-            if (
-                int(grid[j][i])
-                * int(grid[j + 1][i])
-                * int(grid[j + 2][i])
-                * int(grid[j + 3][i])
-            ) > max:
-                max = (
-                    int(grid[j][i])
-                    * int(grid[j + 1][i])
-                    * int(grid[j + 2][i])
-                    * int(grid[j + 3][i])
-                )
-                orient = ("vertical", j, i)
+    maxima = 0
+    for i in range(dimension):
+        for j in range(dimension):
+            if sum_direction(i, j, "horiz") > maxima:
+                maxima = sum_direction(i, j, "horiz")
 
-    for j in range(len(grid) - 3):
-        for i in range(len(grid[j]) - 3):
-            if (
-                int(grid[j][i])
-                * int(grid[j + 1][i + 1])
-                * int(grid[j + 2][i + 2])
-                * int(grid[j + 3][i + 3])
-            ) > max:
-                max = (
-                    int(grid[j][i])
-                    * int(grid[j + 1][i + 1])
-                    * int(grid[j + 2][i + 2])
-                    * int(grid[j + 3][i + 3])
-                )
-                orient = ("diag right", i, j)
+            if sum_direction(i, j, "vert") > maxima:
+                maxima = sum_direction(i, j, "vert")
 
-    for j in range(len(grid) - 3):
-        for i in range(len(grid) - 1, 2, -1):
-            if (
-                int(grid[j][i])
-                * int(grid[j + 1][i - 1])
-                * int(grid[j + 2][i - 2])
-                * int(grid[j + 3][i - 3])
-            ) > max:
-                max = (
-                    int(grid[j][i])
-                    * int(grid[j + 1][i - 1])
-                    * int(grid[j + 2][i - 2])
-                    * int(grid[j + 3][i - 3])
-                )
-                orient = ("diag left", i, j)
-    # print(orient)
-    return max
+            if sum_direction(i, j, "diag_r") > maxima:
+                maxima = sum_direction(i, j, "diag_r")
+
+    for i in range(dimension - 3):
+        for j in range(dimension - 1, 2, -1):
+            if sum_direction(i, j, "diag_l") > maxima:
+                maxima = sum_direction(i, j, "diag_l")
+    return maxima
 
 
 def euler12(n=500):
@@ -958,26 +914,40 @@ def euler24(n=1000000) -> int:
     # return int(
     #     "".join(sorted(list(itertools.permutations([c for c in "0123456789"])))[n - 1])
     # )
-    # answer 2783915460
-    perm_count = 0
 
-    def filter_helper(num):
-        nonlocal perm_count
-        if perm_count == (n - 1):
-            return True
+    # # this method might use less memory, but it shows that with lexicographic input to permutations
+    # # there is no need to sort the output of it
+    # perm_count = 0
+
+    # def filter_helper(num):
+    #     nonlocal perm_count
+    #     if perm_count == (n - 1):
+    #         return True
+    #     else:
+    #         perm_count += 1
+    #         return False
+
+    # return int(
+    #     "".join(
+    #         next(
+    #             filter(filter_helper, itertools.permutations([c for c in "0123456789"]))
+    #         )
+    #     )
+    # )
+    # lets make a method to actually develop the permutations
+    def permute(numList, left, right):
+        """Will add all results to an existing list
+        Switch the leftmost available spot with the next one, recurse, then reset to previous state"""
+        if left == right:
+            results_list.append("".join(numList))
         else:
-            perm_count += 1
-            return False
+            for i in range(left, right + 1):
+                numList[left], numList[i] = numList[i], numList[left]
+                permute(numList, left + 1, right)
+                numList[left], numList[i] = numList[i], numList[left]
 
-    # this method might use less memory, but it shows that with lexicographic input to permutations
-    # there is no need to sort the output of it
-    return int(
-        "".join(
-            next(
-                filter(filter_helper, itertools.permutations([c for c in "0123456789"]))
-            )
-        )
-    )
+    results_list = []
+    permute(list("0123456789"), 0, 9)
+    results_list.sort()
+    return int(results_list[n - 1])
 
-
-print(euler24())
