@@ -1,5 +1,6 @@
 import math
 import datetime
+import functools
 
 
 def euler1(n=1000):
@@ -305,36 +306,40 @@ def euler11():
         1, 70, 54, 71, 83, 51, 54, 69, 16, 92, 33, 48, 61, 43, 52, 1, 89, 19, 67, 48,
     ]
     # fmt: on
-    def sum_direction(i, j: int, direction: str) -> int:
-        if direction == "horiz":
-            return sum(grid[i][j : j + 4])
-        elif direction == "vert":
-            return sum(grid[i : i + 4][j])
-        elif direction == "diag_r":
-            return sum([grid[i + d][j + d] for d in range(4)])
-        else:
-            return sum([grid[i + d][j - d] for d in range(4)])
 
     dimension = 20
     grid = [given[dimension * i : dimension * i + dimension] for i in range(20)]
+    multiply = lambda x, y: x * y
+    horiz_max = max(
+        [
+            functools.reduce(multiply, grid[i][j : j + 4])
+            for i in range(dimension)
+            for j in range(dimension - 3)
+        ]
+    )
+    vert_max = max(
+        [
+            functools.reduce(multiply, [grid[i + i_hat][j] for i_hat in range(4)])
+            for i in range(dimension - 3)
+            for j in range(dimension)
+        ]
+    )
+    diag_r_max = max(
+        [
+            functools.reduce(multiply, [grid[i + d][j + d] for d in range(4)])
+            for i in range(dimension - 3)
+            for j in range(dimension - 3)
+        ]
+    )
+    diag_l_max = max(
+        [
+            functools.reduce(multiply, [grid[i + d][j - d] for d in range(4)])
+            for i in range(dimension - 3)
+            for j in range(dimension - 1, 2, -1)
+        ]
+    )
 
-    maxima = 0
-    for i in range(dimension):
-        for j in range(dimension):
-            if sum_direction(i, j, "horiz") > maxima:
-                maxima = sum_direction(i, j, "horiz")
-
-            if sum_direction(i, j, "vert") > maxima:
-                maxima = sum_direction(i, j, "vert")
-
-            if sum_direction(i, j, "diag_r") > maxima:
-                maxima = sum_direction(i, j, "diag_r")
-
-    for i in range(dimension - 3):
-        for j in range(dimension - 1, 2, -1):
-            if sum_direction(i, j, "diag_l") > maxima:
-                maxima = sum_direction(i, j, "diag_l")
-    return maxima
+    return max(horiz_max, vert_max, diag_r_max, diag_l_max)
 
 
 def euler12(n=500):
@@ -723,7 +728,7 @@ def euler18() -> int:
     return given[0][0] + max(helper(1, 0), helper(1, 1))
 
 
-def euler19(n: str = "2000") -> int:
+def euler19(n: int = 2000) -> int:
     """Counting Sundays
 
     Given that Jan 1 1900 was a Monday, find the number of 
@@ -738,18 +743,12 @@ def euler19(n: str = "2000") -> int:
     -------
     int
     """
-    # sundays = 0
-    # end_year = int(n.split('-')[0])
-    # for year in range(1900, end_year + 1):
-    #     for month in range(1, 13):
-    #         if datetime.date(year, month, 1).isoweekday() == 7:
-    #             sundays += 1
 
     # just use a datetime module to find what weekday the first of each month was
     return sum(
         [
             datetime.date(year, month, 1).isoweekday() == 7
-            for year in range(1901, int(n.split("-")[0]) + 1)
+            for year in range(1901, n + 1)
             for month in range(1, 13)
         ]
     )
@@ -829,13 +828,14 @@ def euler22() -> int:
 
     Using the provided text file '../data/p022_names.txt' read in the names, sort the names
     obtain the alphabetical value for a name and multiply by its index. Return the sum of all the name scores
-    e.g. the name 'COLIN' at index 938, would have alphabetical value 53 and then be multiplied by 938
+    e.g. the name 'ALONSO' at index 938, would have alphabetical value 76 and then be multiplied by 938
+    ALONSO - 1 + 12 + 15 + 14 + 19 + 15 = 76
 
     Returns
     -------
     int
     """
-    # ALONSO - 1 + 12 + 15 + 14 + 19 + 15 = 76
+
     def name_val(s: str) -> int:
         # all names are capital, so use 64 in ascii value
         return sum([ord(c) - 64 for c in s if c != '"'])
@@ -910,41 +910,44 @@ def euler24(n=1000000) -> int:
     -------
     int
     """
-    # creating all 3.6 million permutations seems a little troublesome for a computer
-    # return int(
-    #     "".join(sorted(list(itertools.permutations([c for c in "0123456789"])))[n - 1])
-    # )
+    """
+    creating all 3.6 million permutations seems a little troublesome for a computer
+    return int(
+        "".join(sorted(list(itertools.permutations([c for c in "0123456789"])))[n - 1])
+    )
 
-    # # this method might use less memory, but it shows that with lexicographic input to permutations
-    # # there is no need to sort the output of it
-    # perm_count = 0
+    # this method might use less memory, but it shows that with lexicographic input to permutations
+    # there is no need to sort the output of it
+    perm_count = 0
 
-    # def filter_helper(num):
-    #     nonlocal perm_count
-    #     if perm_count == (n - 1):
-    #         return True
-    #     else:
-    #         perm_count += 1
-    #         return False
+    def filter_helper(num):
+        nonlocal perm_count
+        if perm_count == (n - 1):
+            return True
+        else:
+            perm_count += 1
+            return False
 
-    # return int(
-    #     "".join(
-    #         next(
-    #             filter(filter_helper, itertools.permutations([c for c in "0123456789"]))
-    #         )
-    #     )
-    # )
-    # lets make a method to actually develop the permutations
-    def permute(numList, left, right):
+    return int(
+        "".join(
+            next(
+                filter(filter_helper, itertools.permutations([c for c in "0123456789"]))
+            )
+        )
+    )
+    lets make a method to actually develop the permutations
+    """
+    # other implementations above
+    def permute(num_list, left, right):
         """Will add all results to an existing list
         Switch the leftmost available spot with the next one, recurse, then reset to previous state"""
         if left == right:
-            results_list.append("".join(numList))
+            results_list.append("".join(num_list))
         else:
             for i in range(left, right + 1):
-                numList[left], numList[i] = numList[i], numList[left]
-                permute(numList, left + 1, right)
-                numList[left], numList[i] = numList[i], numList[left]
+                num_list[left], num_list[i] = num_list[i], num_list[left]
+                permute(num_list, left + 1, right)
+                num_list[left], num_list[i] = num_list[i], num_list[left]
 
     results_list = []
     permute(list("0123456789"), 0, 9)

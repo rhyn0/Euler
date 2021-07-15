@@ -127,7 +127,7 @@ class TestEuler10(unittest.TestCase):
         self.assertTrue(type(TestEuler10.num) == int)
 
     def test_euler10_02(self):
-        self.assertTrue(TestEuler10.num == 142913828922)
+        self.assertEqual(TestEuler10.num, 42913828922)
 
     def test_euler10_03(self):
         self.assertEqual(euler.euler10(10), 17)
@@ -138,7 +138,7 @@ class TestEuler11(unittest.TestCase):
         self.assertTrue(type(euler.euler11()) == int)
 
     def test_euler11_02(self):
-        self.assertTrue(euler.euler11() == 70600674)
+        self.assertEqual(euler.euler11(), 70600674)
 
 
 class TestEuler12(unittest.TestCase):
@@ -217,13 +217,13 @@ class TestEuler18(unittest.TestCase):
 
 class TestEuler19(unittest.TestCase):
     def test_euler19_01(self):
-        self.assertTrue(type(euler.euler20()) == int)
+        self.assertTrue(type(euler.euler19()) == int)
 
     def test_euler19_02(self):
-        self.assertTrue(euler.euler20() == 171)
+        self.assertEqual(euler.euler19(), 171)
 
     def test_euler19_03(self):
-        self.assertEqual(euler.euler20("2001"), 173)
+        self.assertEqual(euler.euler19(2001), 173)
 
 
 class TestEuler20(unittest.TestCase):
