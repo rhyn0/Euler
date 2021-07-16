@@ -283,25 +283,6 @@ def euler14(n=1000000) -> int:
     # * if n is a power of 2, it gives us that exponent more in the sequence.
     # * n = 16 (2 ** 4), will give us 4 more terms and then it reaches 1
 
-    # brute force through every number under n
-    # max_len = 0
-    # max_start: int = -1
-    # for i in range(2, n):
-    #     length = 1
-    #     n: int = i
-    #     while n != 1:
-    #         if n % 2 == 0:
-    #             n = n // 2  # type hinting needs this floor divide
-    #         else:
-    #             n = 3 * n + 1
-    #         length += 1
-    #     if length > max_len:
-    #         max_len = length
-    #         max_start = i
-    # print(max_len, max_start)
-    # return max_start
-
-    # lets use some extra memory to go faster, with dictionary
     pass
 
 
@@ -320,34 +301,6 @@ def euler15(n=20) -> int:
     Returns
     -------
     int
-    """
-    # recursive answer
-    # def routes(row, col):
-    # if row == 0 or col == 0:
-    # return 1
-    # if d.get((row, col), 0):
-    # return d[(row, col)]
-    # d[(row, col)] = routes(row - 1, col) + routes(row, col - 1)
-    # return d[(row, col)]
-    # d = dict()
-    # return routes(20, 20)
-
-    # iterative answer, essentially dynamic programming tabulation
-    # grid = [[0] * n for _ in range(n)]
-    # for i in range(len(grid)):
-    #     for j in range(len(grid)):
-    #         if i == 0:
-    #             grid[i][j] = 1
-    #         elif j == 0:
-    #             grid[i][j] = 1
-    #         else:
-    #             grid[i][j] = grid[i - 1][j - 1]
-    # return grid[n][n]
-    # simple math
-    """since there are a total of 2n instructions, we do permutation(2n, 2n) == 2n!
-    but the instructions aren't unique (any right could be replaced with another right)
-    so we should be doing combinations, with 2n choosing n, since the remaining must take the open spots
-    Think of it like choosing which spots the Right's will go, the Down's must take the remaining with no choice
     """
     pass
 
@@ -425,7 +378,7 @@ def euler18() -> int:
     pass
 
 
-def euler19(n: str = "2000") -> int:
+def euler19(n: int = 2000) -> int:
     """Counting Sundays
 
     Given that Jan 1 1900 was a Monday, find the number of 

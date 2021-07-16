@@ -1,4 +1,4 @@
-from typing import ClassVar, List
+from typing import List
 import euler_funcs as euler
 import unittest
 
@@ -280,6 +280,19 @@ class TestEuler24(unittest.TestCase):
 
     def test_euler23_ex(self):
         self.assertEqual(euler.euler24(100), 123495786)
+
+
+class TestEuler25(unittest.TestCase):
+    num = euler.euler25()
+
+    def test_euler23_type(self):
+        self.assertEqual(type(TestEuler25.num), int)
+
+    def test_euler23_val(self):
+        self.assertEqual(TestEuler25.num, 4782)
+
+    def test_euler23_ex(self):
+        self.assertEqual(euler.euler25(3), 12)
 
 
 def run_classes(classes: List):

@@ -954,3 +954,25 @@ def euler24(n=1000000) -> int:
     results_list.sort()
     return int(results_list[n - 1])
 
+
+def euler25(n: int = 1000) -> int:
+    """1000 Digit Fibonacci number
+
+    Fibonacci sequence defined as F(1) = 1, F(2) = 1, find the index of the first Fibonacci number to have 1000 digits.
+
+    Parameters
+    ----------
+    n : int, optional
+        number of digits to have, by default 1000
+
+    Returns
+    -------
+    int
+    """
+    f_i, f_j = 1, 1
+    index = 1  # corresponds to f_i
+    while len(str(f_i)) < n:
+        index += 1
+        f_i, f_j = f_j, f_j + f_i
+    return index
+
