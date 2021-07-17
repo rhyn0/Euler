@@ -272,27 +272,40 @@ class TestEuler23(unittest.TestCase):
 class TestEuler24(unittest.TestCase):
     num = euler.euler24()
 
-    def test_euler23_type(self):
+    def test_euler24_type(self):
         self.assertEqual(type(TestEuler24.num), int)
 
-    def test_euler23_val(self):
+    def test_euler24_val(self):
         self.assertEqual(TestEuler24.num, 2783915460)
 
-    def test_euler23_ex(self):
+    def test_euler24_ex(self):
         self.assertEqual(euler.euler24(100), 123495786)
 
 
 class TestEuler25(unittest.TestCase):
     num = euler.euler25()
 
-    def test_euler23_type(self):
+    def test_euler25_type(self):
         self.assertEqual(type(TestEuler25.num), int)
 
-    def test_euler23_val(self):
+    def test_euler25_val(self):
         self.assertEqual(TestEuler25.num, 4782)
 
-    def test_euler23_ex(self):
+    def test_euler25_ex(self):
         self.assertEqual(euler.euler25(3), 12)
+
+
+class TestEuler26(unittest.TestCase):
+    num = euler.euler26()
+
+    def test_euler26_type(self):
+        self.assertEqual(type(TestEuler26.num), int)
+
+    def test_euler26_val(self):
+        self.assertEqual(TestEuler26.num, 983)
+
+    def test_euler26_ex(self):
+        self.assertEqual(euler.euler26(493), 491)
 
 
 def run_classes(classes: List):

@@ -141,9 +141,9 @@ def euler7(n=10001):
     Ten Thousandth and first prime number, default 10001
 
     By allocation some memory for your 10001 primes and storing them as you find them
-    test every odd number after the last calculated prime against 
+    test every odd number after the last calculated prime against
     all previous calculated primes that are below sqrt(n) for the number you are testing.
-    able to calculate the first 1 000 000 primes in 20 seconds 
+    able to calculate the first 1 000 000 primes in 20 seconds
     """
     # brute force
     # count = 6
@@ -280,7 +280,7 @@ def euler10(n=2000000):
 
 def euler11():
     """
-    Largest product in a grid, 
+    Largest product in a grid,
     """
     # fmt: off
     given = [
@@ -606,7 +606,7 @@ def euler17(n=1000) -> int:
     That are used when creating the English versions of the numbers 1 to n, inclusive
     Returns 0 if n < 1
     Will raise IndexError for numbers greater than 999 billion
-    Example: euler17(5) == 19 # one (3) two (3) three (5) four (4) five (4) 
+    Example: euler17(5) == 19 # one (3) two (3) three (5) four (4) five (4)
 
     Parameters
     ----------
@@ -687,7 +687,7 @@ def euler18() -> int:
 
     Starting at the top of the given triangle
     Find the path that yields the maximum sum of numbers
-    while only able to move to adjacent numbers on the row below. 
+    while only able to move to adjacent numbers on the row below.
     For any index j in a row, can go to either j or j+1 in the row below.
 
     Returns
@@ -731,7 +731,7 @@ def euler18() -> int:
 def euler19(n: int = 2000) -> int:
     """Counting Sundays
 
-    Given that Jan 1 1900 was a Monday, find the number of 
+    Given that Jan 1 1900 was a Monday, find the number of
     Sundays that occurred on the first of the month from Jan 1 1901 up to end of year n.
 
     Parameters
@@ -775,7 +775,7 @@ def euler20(n=100) -> int:
 def euler21(n=10000) -> int:
     """Amicable numbers
 
-    Let d(n) be defined as the sum of proper divisors of n. 
+    Let d(n) be defined as the sum of proper divisors of n.
     If d(a) = b, d(b) = a, and a != b, then a and b are an amicable pair, or each are an amicable number.
     Return the sum of all amicable numbers less than n
     For n = 10, euler21(n) -> 0
@@ -976,3 +976,55 @@ def euler25(n: int = 1000) -> int:
         f_i, f_j = f_j, f_j + f_i
     return index
 
+
+def euler26(n: int = 1000) -> int:
+    """Reciprocal cycles
+
+    A unit fraction is one with a one in the numerator. Find d, d < n, such that the unit fraction of d has the longest repeating cycle
+    A repeating cycle like 1 / 7 = 0.(142857)... where repeats infinitely.
+
+    Parameters
+    ----------
+    n : int, optional
+        Limit to find denominator under, by default 1000
+
+    Returns
+    -------
+    int
+    """
+    """
+    # idea is that we keep doing long division until a value repeats itself
+    longest_cycle, cycle_num = 0, 0
+    for i in range(n - 1, 1, -1):
+        # since i is decreasing, can't create longer cycles later on
+        if longest_cycle >= i:
+            break
+        remainder_list = [0] * i
+        # start at 1 because unit fraction, the first remainder is always 1
+        numerator_val = 1
+        position = 0
+        while remainder_list[numerator_val] == 0 and numerator_val != 0:
+            remainder_list[numerator_val] = position
+            numerator_val = (numerator_val * 10) % i
+            position += 1
+        # comparison isn't just position > longest_cycle
+        # because the repetition might not start at 0
+        if position - remainder_list[numerator_val] > longest_cycle:
+            longest_cycle = position - remainder_list[numerator_val]
+            cycle_num = i
+
+    return cycle_num
+    """
+    # less memory intensive method
+    def recurring_cycle(d):
+        # solve 10^s % d == 10^(s+t) % d
+        # where t is length and s is start
+        # signifies how many times do we multiply by 10 until we reach a repeating val
+        for s in range(d - 1):
+            for t in range(1, d):
+                if 10 ** s % d == 10 ** t % d:
+                    return t
+        return 0
+
+    longest = max(recurring_cycle(i) for i in range(2, n))
+    return [i for i in range(2, n) if recurring_cycle(i) == longest][0]
