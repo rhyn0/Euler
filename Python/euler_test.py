@@ -308,6 +308,19 @@ class TestEuler26(unittest.TestCase):
         self.assertEqual(euler.euler26(493), 491)
 
 
+class TestEuler27(unittest.TestCase):
+    num = euler.euler27()
+
+    def test_euler27_type(self):
+        self.assertEqual(type(TestEuler27.num), int)
+
+    def test_euler27_val(self):
+        self.assertEqual(TestEuler27.num, -59231)
+
+    def test_euler27_ex(self):
+        self.assertEqual(euler.euler26(543), 541)
+
+
 def run_classes(classes: List):
     # Run only the tests in the specified classes
 

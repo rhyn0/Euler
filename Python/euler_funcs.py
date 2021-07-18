@@ -75,12 +75,12 @@ def euler4():
     return biggest
 
 
-def is_prime(n):
+def is_prime(n: int):
     """
     checks if a number is prime, only need to check up to square root of n (inclusive)
     """
 
-    if n == 1:
+    if n <= 1:
         return False
     for i in range(2, int(n ** 0.5) + 1):
         if n % i == 0:
@@ -1028,3 +1028,33 @@ def euler26(n: int = 1000) -> int:
 
     longest = max(recurring_cycle(i) for i in range(2, n))
     return [i for i in range(2, n) if recurring_cycle(i) == longest][0]
+
+
+def euler27(num: int = 1000) -> int:
+    """Quadratic Primes
+
+    Using a quadratic formula of format n^2 + an + b, find the product of the coefficients (a * b) for the pairing
+    that creates the maximum number of consecutive primes starting at n = 0. abs(a) must be less than value of num while abs(b) less than equal to num.
+    E.g. n^2 + n + 41 yields primes for 0 <= n <= 39
+
+    Parameters
+    ----------
+    num : int, optional
+        Limit to the coefficients, by default 1000
+
+    Returns
+    -------
+    int
+    """
+    # brute force very fast since is_prime is somewhat optimized
+    consec_prime = 0
+    coeff_prod = 0
+    for a in range(-num + 1, num):
+        for b in range(-num, num + 1):
+            n = 0
+            while is_prime(int(n ** 2 + a * n + b)):
+                n += 1
+            if n > consec_prime:
+                consec_prime = n
+                coeff_prod = a * b
+    return coeff_prod
