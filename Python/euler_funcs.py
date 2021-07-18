@@ -1049,12 +1049,51 @@ def euler27(num: int = 1000) -> int:
     # brute force very fast since is_prime is somewhat optimized
     consec_prime = 0
     coeff_prod = 0
-    for a in range(-num + 1, num):
-        for b in range(-num, num + 1):
+    # easiest base cases are that when n = 0, b must be prime
+    # a must be odd for n = 1, e.g. 1^2 + a + b = prime number, where we know b is a prime
+    # b is odd as prime numbers > 2 are odd
+    num = abs(num)
+    offset = 1 if num % 2 == 0 else 0
+    # make sure we start at an odd number and go thru every odd
+    for a in range(-num + offset, num + (1 - offset), 2):
+        # negative numbers are not prime so can shorten this range
+        for b in [i for i in range(2, num + 1) if is_prime(i)]:
             n = 0
             while is_prime(int(n ** 2 + a * n + b)):
                 n += 1
+                if b == n:
+                    break
             if n > consec_prime:
                 consec_prime = n
                 coeff_prod = a * b
     return coeff_prod
+
+
+def euler28(n: int = 1001) -> int:
+    """Number spirals diagonals
+
+    Starting with the number 1 and moving clockwise to the right, can create a number spiral.
+    A 3 x 3 grid would look like:
+        7 8 9
+        6 1 2
+        5 4 3
+    And the sum across the diagonals would be 25. For a n x n grid, find the sum of the diagonals
+
+    Parameters
+    ----------
+    n : int, optional
+        size of grid n x n, by default 1001
+
+    Returns
+    -------
+    int
+        sum of both diagonals
+    """
+    # * should be a simple mathematical way of doing
+    # top right diagonal to center is sum of the dimension squared for odds from 3 to n
+    # can use dimension of that point to find the other 3 corners.
+    total = 1
+    for dim in range(3, n + 1, 2):
+        for i in range(4):
+            total += dim * dim - i * (dim - 1)
+    return total
