@@ -83,12 +83,12 @@ int main(int argc, char **argv)
 
 /**
  * @brief Multiples of 3 and 5. Sum of multiples of 3 or 5 under n
- * 
+ *
  * Brute forces through all numbers in the range twice, double checking on second pass
  * that numbers are not counted twice.
- * 
+ *
  * @param n limit to sum under
- * @return int 
+ * @return int
  */
 int euler1(int n)
 {

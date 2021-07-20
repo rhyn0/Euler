@@ -1,4 +1,4 @@
-import os, sys
+import sys
 import euler_funcs as eu
 
 functions = {
