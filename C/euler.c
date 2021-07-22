@@ -180,5 +180,33 @@ int euler4(int n)
 
 int euler5(int num)
 {
-    return -1;
+    if (num < 0)
+    {
+        num = 20;
+    }
+    int multiple = num, j;
+    while (1)
+    {
+        // need to keep the <= case for edge case like 1
+        for (j = 1; j <= num; j++)
+        {
+            // if a number doesn't evenly divide, need a different multiple
+            if (multiple % j != 0)
+            {
+                break;
+            }
+            else
+            {
+                // if all numbers evenly divide then return
+                // guaranteed to be divisible by num
+                // >= operator due to edge case of num = 1
+                if (j >= num - 1)
+                {
+                    return multiple;
+                }
+            }
+        }
+        // add num, thus guaranteeing that num divides it
+        multiple += num;
+    }
 }

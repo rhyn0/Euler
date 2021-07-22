@@ -100,9 +100,8 @@ def euler5(n=20):
     #     for j in range(2, n + 1):
     #         if i % j != 0:
     #             break
-    #         else:
-    #             if j == n:
-    #                 return i
+    #     else:
+    #         return i
     #     i += n
     # find prime factorization of all terms up to n
     prime_list = [0] * n
