@@ -77,7 +77,8 @@ def euler4():
 
 def is_prime(n: int):
     """
-    checks if a number is prime, only need to check up to square root of n (inclusive)
+    checks if a number is prime
+    only need to check up to square root of n (inclusive)
     """
 
     if n <= 1:
@@ -104,7 +105,7 @@ def euler5(n=20):
     #                 return i
     #     i += n
     # find prime factorization of all terms up to n
-    l = [0] * n
+    prime_list = [0] * n
     for i in range(2, n + 1):
         num = i
         div = 2
@@ -114,15 +115,15 @@ def euler5(n=20):
                 count += 1
                 num = num // div
             else:
-                if l[div - 1] < count:
-                    l[div - 1] = count
+                if prime_list[div - 1] < count:
+                    prime_list[div - 1] = count
                 div += 1
                 count = 0
-        if l[div - 1] < count:
-            l[div - 1] = count
+        if prime_list[div - 1] < count:
+            prime_list[div - 1] = count
     out = 1
-    for i in range(len(l)):
-        out *= (i + 1) ** l[i]
+    for i in range(len(prime_list)):
+        out *= (i + 1) ** prime_list[i]
     return out
 
 
@@ -139,11 +140,6 @@ def euler6(n=100):
 def euler7(n=10001):
     """
     Ten Thousandth and first prime number, default 10001
-
-    By allocation some memory for your 10001 primes and storing them as you find them
-    test every odd number after the last calculated prime against
-    all previous calculated primes that are below sqrt(n) for the number you are testing.
-    able to calculate the first 1 000 000 primes in 20 seconds
     """
     # brute force
     # count = 6
@@ -242,7 +238,7 @@ def euler9(num=1000):
     #         # print("testing", a, b, int(a * a + b * b) ** 0.5)
     #         return a * b * int((a * a + b * b) ** 0.5)
 
-    # using Euclid Algorithm, where all pythagorean triples are in relation to integers m, n, k
+    # using Euclid Algorithm, where all triples are related to integers m, n, k
     # https://en.wikipedia.org/wiki/Pythagorean_triple#Generating_a_triple
     # b = 2mn; a = m^2 -n^2; c = m^2 + n^2;
     # a + b + c = num
@@ -270,9 +266,8 @@ def euler10(n=2000000):
     bound = (n - 1) // 2
     limit = (math.floor(math.sqrt(n)) - 1) // 2
     for i in range(1, limit + 1):
-        if (
-            sieve[i] == 0
-        ):  # sieve range is cut in half, so this actually corresponds to the number 2*i + 1
+        # sieve range is cut in half, i corresponds to the number 2*i + 1
+        if sieve[i] == 0:
             for j in range(2 * i * (i + 1), bound + 1, 2 * i + 1):
                 sieve[j] = 1
     return 2 + sum([(2 * x) + 1 for x in range(len(sieve)) if sieve[x] == 0])
@@ -283,33 +278,36 @@ def euler11():
     Largest product in a grid,
     """
     # fmt: off
-    given = [
-        8, 2, 22, 97, 38, 15, 00, 40, 00, 75, 4, 5, 7, 78, 52, 12, 50, 77, 91, 8,
-        49, 49, 99, 40, 17, 81, 18, 57, 60, 87, 17, 40, 98, 43, 69, 48, 4, 56, 62, 00,
-        81, 49, 31, 73, 55, 79, 14, 29, 93, 71, 40, 67, 53, 88, 30, 3, 49, 13, 36, 65,
-        52, 70, 95, 23, 4, 60, 11, 42, 69, 24, 68, 56, 1, 32, 56, 71, 37, 2, 36, 91,
-        22, 31, 16, 71, 51, 67, 63, 89, 41, 92, 36, 54, 22, 40, 40, 28, 66, 33, 13, 80,
-        24, 47, 32, 60, 99, 3, 45, 2, 44, 75, 33, 53, 78, 36, 84, 20, 35, 17, 12, 50,
-        32, 98, 81, 28, 64, 23, 67, 10, 26, 38, 40, 67, 59, 54, 70, 66, 18, 38, 64, 70,
-        67, 26, 20, 68, 2, 62, 12, 20, 95, 63, 94, 39, 63, 8, 40, 91, 66, 49, 94, 21,
-        24, 55, 58, 5, 66, 73, 99, 26, 97, 17, 78, 78, 96, 83, 14, 88, 34, 89, 63, 72,
-        21, 36, 23, 9, 75, 00, 76, 44, 20, 45, 35, 14, 00, 61, 33, 97, 34, 31, 33, 95,
-        78, 17, 53, 28, 22, 75, 31, 67, 15, 94, 3, 80, 4, 62, 16, 14, 9, 53, 56, 92,
-        16, 39, 5, 42, 96, 35, 31, 47, 55, 58, 88, 24, 00, 17, 54, 24, 36, 29, 85, 57,
-        86, 56, 00, 48, 35, 71, 89, 7, 5, 44, 44, 37, 44, 60, 21, 58, 51, 54, 17, 58,
-        19, 80, 81, 68, 5, 94, 47, 69, 28, 73, 92, 13, 86, 52, 17, 77, 4, 89, 55, 40,
-        4, 52, 8, 83, 97, 35, 99, 16, 7, 97, 57, 32, 16, 26, 26, 79, 33, 27, 98, 66,
-        88, 36, 68, 87, 57, 62, 20, 72, 3, 46, 33, 67, 46, 55, 12, 32, 63, 93, 53, 69,
-        4, 42, 16, 73, 38, 25, 39, 11, 24, 94, 72, 18, 8, 46, 29, 32, 40, 62, 76, 36,
-        20, 69, 36, 41, 72, 30, 23, 88, 34, 62, 99, 69, 82, 67, 59, 85, 74, 4, 36, 16,
-        20, 73, 35, 29, 78, 31, 90, 1, 74, 31, 49, 71, 48, 86, 81, 16, 23, 57, 5, 54,
-        1, 70, 54, 71, 83, 51, 54, 69, 16, 92, 33, 48, 61, 43, 52, 1, 89, 19, 67, 48,
+    given = [  # noqa: E501
+        8, 2, 22, 97, 38, 15, 0, 40, 0, 75, 4, 5, 7, 78, 52, 12, 50, 77, 91, 8,  # noqa: E501
+        49, 49, 99, 40, 17, 81, 18, 57, 60, 87, 17, 40, 98, 43, 69, 48, 4, 56, 62, 0,  # noqa: E501
+        81, 49, 31, 73, 55, 79, 14, 29, 93, 71, 40, 67, 53, 88, 30, 3, 49, 13, 36, 65,  # noqa: E501
+        52, 70, 95, 23, 4, 60, 11, 42, 69, 24, 68, 56, 1, 32, 56, 71, 37, 2, 36, 91,  # noqa: E501
+        22, 31, 16, 71, 51, 67, 63, 89, 41, 92, 36, 54, 22, 40, 40, 28, 66, 33, 13, 80,  # noqa: E501
+        24, 47, 32, 60, 99, 3, 45, 2, 44, 75, 33, 53, 78, 36, 84, 20, 35, 17, 12, 50,  # noqa: E501
+        32, 98, 81, 28, 64, 23, 67, 10, 26, 38, 40, 67, 59, 54, 70, 66, 18, 38, 64, 70,  # noqa: E501
+        67, 26, 20, 68, 2, 62, 12, 20, 95, 63, 94, 39, 63, 8, 40, 91, 66, 49, 94, 21,  # noqa: E501
+        24, 55, 58, 5, 66, 73, 99, 26, 97, 17, 78, 78, 96, 83, 14, 88, 34, 89, 63, 72,  # noqa: E501
+        21, 36, 23, 9, 75, 0, 76, 44, 20, 45, 35, 14, 0, 61, 33, 97, 34, 31, 33, 95,  # noqa: E501
+        78, 17, 53, 28, 22, 75, 31, 67, 15, 94, 3, 80, 4, 62, 16, 14, 9, 53, 56, 92,  # noqa: E501
+        16, 39, 5, 42, 96, 35, 31, 47, 55, 58, 88, 24, 0, 17, 54, 24, 36, 29, 85, 57,  # noqa: E501
+        86, 56, 0, 48, 35, 71, 89, 7, 5, 44, 44, 37, 44, 60, 21, 58, 51, 54, 17, 58,  # noqa: E501
+        19, 80, 81, 68, 5, 94, 47, 69, 28, 73, 92, 13, 86, 52, 17, 77, 4, 89, 55, 40,  # noqa: E501
+        4, 52, 8, 83, 97, 35, 99, 16, 7, 97, 57, 32, 16, 26, 26, 79, 33, 27, 98, 66,  # noqa: E501
+        88, 36, 68, 87, 57, 62, 20, 72, 3, 46, 33, 67, 46, 55, 12, 32, 63, 93, 53, 69,  # noqa: E501
+        4, 42, 16, 73, 38, 25, 39, 11, 24, 94, 72, 18, 8, 46, 29, 32, 40, 62, 76, 36,  # noqa: E501
+        20, 69, 36, 41, 72, 30, 23, 88, 34, 62, 99, 69, 82, 67, 59, 85, 74, 4, 36, 16,  # noqa: E501
+        20, 73, 35, 29, 78, 31, 90, 1, 74, 31, 49, 71, 48, 86, 81, 16, 23, 57, 5, 54,  # noqa: E501
+        1, 70, 54, 71, 83, 51, 54, 69, 16, 92, 33, 48, 61, 43, 52, 1, 89, 19, 67, 48,  # noqa: E501
     ]
     # fmt: on
 
+    def multiply(x, y):
+        return x * y
+
     dimension = 20
     grid = [given[dimension * i : dimension * i + dimension] for i in range(20)]
-    multiply = lambda x, y: x * y
+
     horiz_max = max(
         [
             functools.reduce(multiply, grid[i][j : j + 4])
@@ -479,7 +477,9 @@ def euler14(n=1000000) -> int:
     if n is even, n = n / 2
     if n is odd, n = 3 * n + 1
     if n == 1, stop
-    So if we start at 13, the sequence would be 13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1. Giving length 10
+    So if we start at 13, the sequence would be:
+        13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1.
+    Giving length 10
 
     Parameters
     ----------
@@ -489,7 +489,7 @@ def euler14(n=1000000) -> int:
     Returns
     -------
     int
-        starting number, which is less than n, which produces longest Collatz sequence
+        starting number that produces longest Collatz sequence
     """
     # * Cool Note
     # * if n is a power of 2, it gives us that exponent more in the sequence.
@@ -574,10 +574,9 @@ def euler15(n=20) -> int:
     #             grid[i][j] = grid[i - 1][j - 1]
     # return grid[n][n]
     # simple math
-    """since there are a total of 2n instructions, we do permutation(2n, 2n) == 2n!
-    but the instructions aren't unique (any right could be replaced with another right)
-    so we should be doing combinations, with 2n choosing n, since the remaining must take the open spots
-    Think of it like choosing which spots the Right's will go, the Down's must take the remaining with no choice
+    """since there are a total of 2n instructions, we do perm(2n, 2n) == 2n!
+    instructions aren't unique (any right could be replaced with another right)
+    should use combinations, with 2n choosing n, remaining must take final spots
     """
     return math.comb(2 * n, n)
 
@@ -603,7 +602,7 @@ def euler17(n=1000) -> int:
     """Number letter counts
 
     Return the number of letters (ignore whitespace/special characters)
-    That are used when creating the English versions of the numbers 1 to n, inclusive
+    Used when creating the English versions of the numbers 1 to n, inclusive
     Returns 0 if n < 1
     Will raise IndexError for numbers greater than 999 billion
     Example: euler17(5) == 19 # one (3) two (3) three (5) four (4) five (4)
@@ -731,8 +730,8 @@ def euler18() -> int:
 def euler19(n: int = 2000) -> int:
     """Counting Sundays
 
-    Given that Jan 1 1900 was a Monday, find the number of
-    Sundays that occurred on the first of the month from Jan 1 1901 up to end of year n.
+    Given that Jan 1 1900 was a Monday, find the number of Sundays that occurred
+    on the first of the month from Jan 1 1901 up to end of year n.
 
     Parameters
     ----------
@@ -776,7 +775,7 @@ def euler21(n=10000) -> int:
     """Amicable numbers
 
     Let d(n) be defined as the sum of proper divisors of n.
-    If d(a) = b, d(b) = a, and a != b, then a and b are an amicable pair, or each are an amicable number.
+    If d(a) = b, d(b) = a, and a != b, then a and b are both an amicable number.
     Return the sum of all amicable numbers less than n
     For n = 10, euler21(n) -> 0
 
@@ -796,7 +795,7 @@ def euler21(n=10000) -> int:
     def sum_divisors(num):
         start = 1
         if num not in memo:
-            # everything is divisible by 1, but can not include n in proper divisors
+            # can not include n in proper divisors
             root = int(math.sqrt(num))
             if num % root == 0:
                 # if perfect square, can only count its divisor once
@@ -812,7 +811,7 @@ def euler21(n=10000) -> int:
         return memo[num]
 
     # for each number, we find the sum of the divisors
-    # then if the sum of the divisors of that sum is equal to the number we store them
+    # keep nums if the sum of the divisors of that sum is equal to the number
     # d(d(a)) = a and we want all 'a' that satisfy that
     return sum(
         [
@@ -826,10 +825,11 @@ def euler21(n=10000) -> int:
 def euler22() -> int:
     """Names Scores
 
-    Using the provided text file '../data/p022_names.txt' read in the names, sort the names
-    obtain the alphabetical value for a name and multiply by its index. Return the sum of all the name scores
-    e.g. the name 'ALONSO' at index 938, would have alphabetical value 76 and then be multiplied by 938
-    ALONSO - 1 + 12 + 15 + 14 + 19 + 15 = 76
+    Using the provided text file '../data/p022_names.txt' read in the names, sort
+    obtain the alphabetical value for a name and multiply by its index.
+    Return the sum of all the name scores
+    e.g. the name 'ALONSO' at index 938
+    Score('ALONSO') -> 1 + 12 + 15 + 14 + 19 + 15 = 76 * 938 == 71288
 
     Returns
     -------
@@ -840,7 +840,7 @@ def euler22() -> int:
         # all names are capital, so use 64 in ascii value
         return sum([ord(c) - 64 for c in s if c != '"'])
 
-    with open("data/p022_names.txt", "r") as f:
+    with open("data/p022_names.txt") as f:
         data = f.read()  # it is one line
     data = sorted(data.split(","))
     return sum([i * name_val(name) for i, name in enumerate(data, start=1)])
@@ -849,16 +849,20 @@ def euler22() -> int:
 def euler23(n=28123) -> int:
     """Non-abundant sums
 
-    Return the sum of all positive integers, less than equal to n, which cannot be written as the sum of two abundant numbers
-    An abundant number is one whose proper divisors sum to a value greater than the number. e.g. 12 is abundant, 1 + 2 + 3 + 4 + 6 = 16
-    Mathematical analysis show that all integers greater than 28123 can be written as a sum of two abundant numbers
+    Return the sum of all positive integers, less than equal to n,
+    which cannot be written as the sum of two abundant numbers
+    Abundant numbers are those with a proper divisors sum to a value
+    greater than the number e.g. 12 is abundant, 1 + 2 + 3 + 4 + 6 = 16
+    Mathematical analysis show that all integers greater than 28123
+    can be written as a sum of two abundant numbers
     ### https://mathschallenge.net/full/sum_of_two_abundant_numbers
-    Find all abundant numbers up to n, then create sums of those abundant numbers. Then for i up to n, if it is not a sum, add it to total
+    Find all abundant numbers up to n, then create sums of those abundant numbers
+    Then for i up to n, if it is not a sum, add it to total
 
     Parameters
     ----------
     n : int, optional
-        limit to find abundant number up to (inclusive), by default 28123
+        limit to find abundant number up to n (inclusive), by default 28123
 
     Returns
     -------
@@ -887,10 +891,10 @@ def euler23(n=28123) -> int:
         # rewritten: sum of all divisors = sum of proper divisors + n
         return total > 2 * copy
 
-    abundant = [i for i in range(2, n + 1) if is_abundant(i)]
-    abundant_sum = set(
-        [abundant[i] + abundant[j] for i in range(len(abundant)) for j in range(i + 1)]
-    )
+    abund = [i for i in range(2, n + 1) if is_abundant(i)]
+    abundant_sum = {
+        abund[i] + abund[j] for i in range(len(abund)) for j in range(i + 1)
+    }
 
     return sum([s for s in range(n + 1) if s not in abundant_sum])
 
@@ -911,12 +915,17 @@ def euler24(n=1000000) -> int:
     int
     """
     """
-    creating all 3.6 million permutations seems a little troublesome for a computer
+    creating all 3.6 million permutations seems troublesome for a computer
     return int(
-        "".join(sorted(list(itertools.permutations([c for c in "0123456789"])))[n - 1])
+    "".join(
+        sorted(
+            list(itertools.permutations([c for c in "0123456789"])
+        )[n - 1]
+        )
     )
 
-    # this method might use less memory, but it shows that with lexicographic input to permutations
+    # this method might use less memory
+    # shows that with lexicographic input to permutations
     # there is no need to sort the output of it
     perm_count = 0
 
@@ -931,7 +940,8 @@ def euler24(n=1000000) -> int:
     return int(
         "".join(
             next(
-                filter(filter_helper, itertools.permutations([c for c in "0123456789"]))
+                filter(filter_helper,
+                       itertools.permutations([c for c in "0123456789"]))
             )
         )
     )
@@ -940,7 +950,9 @@ def euler24(n=1000000) -> int:
     # other implementations above
     def permute(num_list, left, right):
         """Will add all results to an existing list
-        Switch the leftmost available spot with the next one, recurse, then reset to previous state"""
+        Switch the leftmost available spot with the next one
+        recurse, then reset to previous state
+        """
         if left == right:
             results_list.append("".join(num_list))
         else:
@@ -958,7 +970,8 @@ def euler24(n=1000000) -> int:
 def euler25(n: int = 1000) -> int:
     """1000 Digit Fibonacci number
 
-    Fibonacci sequence defined as F(1) = 1, F(2) = 1, find the index of the first Fibonacci number to have 1000 digits.
+    Fibonacci sequence defined as F(1) = 1, F(2) = 1
+    find the index of the first Fibonacci number to have 1000 digits.
 
     Parameters
     ----------
@@ -980,7 +993,8 @@ def euler25(n: int = 1000) -> int:
 def euler26(n: int = 1000) -> int:
     """Reciprocal cycles
 
-    A unit fraction is one with a one in the numerator. Find d, d < n, such that the unit fraction of d has the longest repeating cycle
+    A unit fraction is one with a one in the numerator. Find d, d < n,
+    such that the unit fraction of d has the longest repeating cycle.
     A repeating cycle like 1 / 7 = 0.(142857)... where repeats infinitely.
 
     Parameters
@@ -1019,7 +1033,7 @@ def euler26(n: int = 1000) -> int:
     def recurring_cycle(d):
         # solve 10^s % d == 10^(s+t) % d
         # where t is length and s is start
-        # signifies how many times do we multiply by 10 until we reach a repeating val
+        # how many times do we multiply by 10 until we reach a repeating val
         for s in range(d - 1):
             for t in range(1, d):
                 if 10 ** s % d == 10 ** t % d:
@@ -1033,8 +1047,10 @@ def euler26(n: int = 1000) -> int:
 def euler27(num: int = 1000) -> int:
     """Quadratic Primes
 
-    Using a quadratic formula of format n^2 + an + b, find the product of the coefficients (a * b) for the pairing
-    that creates the maximum number of consecutive primes starting at n = 0. abs(a) must be less than value of num while abs(b) less than equal to num.
+    Using a quadratic formula of format n^2 + an + b,
+    find the product of the coefficients (a * b) for the pairing.
+    that creates the maximum number of consecutive primes starting at n = 0.
+    abs(a) must be less than value of num while abs(b) less than equal to num.
     E.g. n^2 + n + 41 yields primes for 0 <= n <= 39
 
     Parameters
@@ -1050,7 +1066,7 @@ def euler27(num: int = 1000) -> int:
     consec_prime = 0
     coeff_prod = 0
     # easiest base cases are that when n = 0, b must be prime
-    # a must be odd for n = 1, e.g. 1^2 + a + b = prime number, where we know b is a prime
+    # a must be odd for n = 1, e.g. 1^2 + a + b = prime number
     # b is odd as prime numbers > 2 are odd
     num = abs(num)
     offset = 1 if num % 2 == 0 else 0
@@ -1072,12 +1088,14 @@ def euler27(num: int = 1000) -> int:
 def euler28(n: int = 1001) -> int:
     """Number spirals diagonals
 
-    Starting with the number 1 and moving clockwise to the right, can create a number spiral.
+    Starting with the number 1 and moving clockwise to the right,
+    can create a number spiral.
     A 3 x 3 grid would look like:
         7 8 9
         6 1 2
         5 4 3
-    And the sum across the diagonals would be 25. For a n x n grid, find the sum of the diagonals
+    And the sum across the diagonals would be 25. For a n x n grid,
+    find the sum of the diagonals.
 
     Parameters
     ----------
@@ -1090,7 +1108,7 @@ def euler28(n: int = 1001) -> int:
         sum of both diagonals
     """
     # * should be a simple mathematical way of doing
-    # top right diagonal to center is sum of the dimension squared for odds from 3 to n
+    # top right diagonal is sum of the dimension squared for odds from 3 to n
     # can use dimension of that point to find the other 3 corners.
     total = 1
     for dim in range(3, n + 1, 2):

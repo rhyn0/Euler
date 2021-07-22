@@ -63,9 +63,9 @@ def euler7(n=10001):
     Ten Thousandth and first prime number, default 10001
 
     By allocation some memory for your 10001 primes and storing them as you find them
-    test every odd number after the last calculated prime against 
+    test every odd number after the last calculated prime against
     all previous calculated primes that are below sqrt(n) for the number you are testing.
-    able to calculate the first 1 000 000 primes in 20 seconds 
+    able to calculate the first 1 000 000 primes in 20 seconds
     """
     pass
 
@@ -116,7 +116,7 @@ def euler10(n=2000000):
 
 def euler11():
     """
-    Largest product in a grid, 
+    Largest product in a grid,
     """
 
     given = (
@@ -329,7 +329,7 @@ def euler17(n=1000) -> int:
     That are used when creating the English versions of the numbers 1 to n, inclusive
     Returns 0 if n < 1
     Will raise IndexError for numbers greater than 999 billion
-    Example: euler17(5) == 19 # one (3) two (3) three (5) four (4) five (4) 
+    Example: euler17(5) == 19 # one (3) two (3) three (5) four (4) five (4)
 
     Parameters
     ----------
@@ -350,7 +350,7 @@ def euler18() -> int:
 
     Starting at the top of the given triangle
     Find the path that yields the maximum sum of numbers
-    while only able to move to adjacent numbers on the row below. 
+    while only able to move to adjacent numbers on the row below.
     For any index j in a row, can go to either j or j+1 in the row below.
 
     Returns
@@ -381,7 +381,7 @@ def euler18() -> int:
 def euler19(n: int = 2000) -> int:
     """Counting Sundays
 
-    Given that Jan 1 1900 was a Monday, find the number of 
+    Given that Jan 1 1900 was a Monday, find the number of
     Sundays that occurred on the first of the month from Jan 1 1901 up to end of year n.
 
     Parameters
@@ -394,4 +394,3 @@ def euler19(n: int = 2000) -> int:
     int
     """
     pass
-
