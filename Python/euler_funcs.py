@@ -60,18 +60,27 @@ def euler3(n=600851475143):
     return int(factor)
 
 
-def euler4():
+def euler4() -> int:
     """
     Largest Palindrome Product of 2 three digit numbers
     """
 
+    def reverse_num(number: int) -> int:
+        flipped = 0
+        while number > 0:
+            flipped = 10 * flipped + number % 10
+            number //= 10
+        return flipped
+
     biggest = 0
     for i in range(999, 100, -1):
-        for j in range(990, 100, -11):
-            x = str(i * j)
-            if int(x) > biggest and x == x[::-1]:
-                # print(x, i, j)
-                biggest = int(x)
+        for j in range(999, i - 1, -1):
+            x = i * j
+            if x <= biggest:
+                break
+            # if x == x[::-1]: # worried about string comparisons being slow
+            if reverse_num(x) == x:
+                biggest = max(biggest, int(x))
     return biggest
 
 
@@ -273,32 +282,45 @@ def euler10(n=2000000):
     return 2 + sum([(2 * x) + 1 for x in range(len(sieve)) if sieve[x] == 0])
 
 
-def euler11():
-    """
-    Largest product in a grid,
+def euler11(n: int = 4) -> int:
+    """Largest Product in a Grid
+
+    Find the largest product in a grid and return the product of
+    n contiguous numbers horizontally, vertically, diagonally left or right
+
+
+    Parameters
+    ----------
+    n : int, optional
+        contiguous numbers, by default 4
+
+    Returns
+    -------
+    int
+        maximum product
     """
     # fmt: off
-    given = [  # noqa: E501
-        8, 2, 22, 97, 38, 15, 0, 40, 0, 75, 4, 5, 7, 78, 52, 12, 50, 77, 91, 8,  # noqa: E501
-        49, 49, 99, 40, 17, 81, 18, 57, 60, 87, 17, 40, 98, 43, 69, 48, 4, 56, 62, 0,  # noqa: E501
-        81, 49, 31, 73, 55, 79, 14, 29, 93, 71, 40, 67, 53, 88, 30, 3, 49, 13, 36, 65,  # noqa: E501
-        52, 70, 95, 23, 4, 60, 11, 42, 69, 24, 68, 56, 1, 32, 56, 71, 37, 2, 36, 91,  # noqa: E501
-        22, 31, 16, 71, 51, 67, 63, 89, 41, 92, 36, 54, 22, 40, 40, 28, 66, 33, 13, 80,  # noqa: E501
-        24, 47, 32, 60, 99, 3, 45, 2, 44, 75, 33, 53, 78, 36, 84, 20, 35, 17, 12, 50,  # noqa: E501
-        32, 98, 81, 28, 64, 23, 67, 10, 26, 38, 40, 67, 59, 54, 70, 66, 18, 38, 64, 70,  # noqa: E501
-        67, 26, 20, 68, 2, 62, 12, 20, 95, 63, 94, 39, 63, 8, 40, 91, 66, 49, 94, 21,  # noqa: E501
-        24, 55, 58, 5, 66, 73, 99, 26, 97, 17, 78, 78, 96, 83, 14, 88, 34, 89, 63, 72,  # noqa: E501
-        21, 36, 23, 9, 75, 0, 76, 44, 20, 45, 35, 14, 0, 61, 33, 97, 34, 31, 33, 95,  # noqa: E501
-        78, 17, 53, 28, 22, 75, 31, 67, 15, 94, 3, 80, 4, 62, 16, 14, 9, 53, 56, 92,  # noqa: E501
-        16, 39, 5, 42, 96, 35, 31, 47, 55, 58, 88, 24, 0, 17, 54, 24, 36, 29, 85, 57,  # noqa: E501
-        86, 56, 0, 48, 35, 71, 89, 7, 5, 44, 44, 37, 44, 60, 21, 58, 51, 54, 17, 58,  # noqa: E501
-        19, 80, 81, 68, 5, 94, 47, 69, 28, 73, 92, 13, 86, 52, 17, 77, 4, 89, 55, 40,  # noqa: E501
-        4, 52, 8, 83, 97, 35, 99, 16, 7, 97, 57, 32, 16, 26, 26, 79, 33, 27, 98, 66,  # noqa: E501
-        88, 36, 68, 87, 57, 62, 20, 72, 3, 46, 33, 67, 46, 55, 12, 32, 63, 93, 53, 69,  # noqa: E501
-        4, 42, 16, 73, 38, 25, 39, 11, 24, 94, 72, 18, 8, 46, 29, 32, 40, 62, 76, 36,  # noqa: E501
-        20, 69, 36, 41, 72, 30, 23, 88, 34, 62, 99, 69, 82, 67, 59, 85, 74, 4, 36, 16,  # noqa: E501
-        20, 73, 35, 29, 78, 31, 90, 1, 74, 31, 49, 71, 48, 86, 81, 16, 23, 57, 5, 54,  # noqa: E501
-        1, 70, 54, 71, 83, 51, 54, 69, 16, 92, 33, 48, 61, 43, 52, 1, 89, 19, 67, 48,  # noqa: E501
+    grid = [  # noqa: E501
+        [8, 2, 22, 97, 38, 15, 0, 40, 0, 75, 4, 5, 7, 78, 52, 12, 50, 77, 91, 8],  # noqa: E501
+        [49, 49, 99, 40, 17, 81, 18, 57, 60, 87, 17, 40, 98, 43, 69, 48, 4, 56, 62, 0],  # noqa: E501
+        [81, 49, 31, 73, 55, 79, 14, 29, 93, 71, 40, 67, 53, 88, 30, 3, 49, 13, 36, 65],  # noqa: E501
+        [52, 70, 95, 23, 4, 60, 11, 42, 69, 24, 68, 56, 1, 32, 56, 71, 37, 2, 36, 91],  # noqa: E501
+        [22, 31, 16, 71, 51, 67, 63, 89, 41, 92, 36, 54, 22, 40, 40, 28, 66, 33, 13, 80],  # noqa: E501
+        [24, 47, 32, 60, 99, 3, 45, 2, 44, 75, 33, 53, 78, 36, 84, 20, 35, 17, 12, 50],  # noqa: E501
+        [32, 98, 81, 28, 64, 23, 67, 10, 26, 38, 40, 67, 59, 54, 70, 66, 18, 38, 64, 70],  # noqa: E501
+        [67, 26, 20, 68, 2, 62, 12, 20, 95, 63, 94, 39, 63, 8, 40, 91, 66, 49, 94, 21],  # noqa: E501
+        [24, 55, 58, 5, 66, 73, 99, 26, 97, 17, 78, 78, 96, 83, 14, 88, 34, 89, 63, 72],  # noqa: E501
+        [21, 36, 23, 9, 75, 0, 76, 44, 20, 45, 35, 14, 0, 61, 33, 97, 34, 31, 33, 95],  # noqa: E501
+        [78, 17, 53, 28, 22, 75, 31, 67, 15, 94, 3, 80, 4, 62, 16, 14, 9, 53, 56, 92],  # noqa: E501
+        [16, 39, 5, 42, 96, 35, 31, 47, 55, 58, 88, 24, 0, 17, 54, 24, 36, 29, 85, 57],  # noqa: E501
+        [86, 56, 0, 48, 35, 71, 89, 7, 5, 44, 44, 37, 44, 60, 21, 58, 51, 54, 17, 58],  # noqa: E501
+        [19, 80, 81, 68, 5, 94, 47, 69, 28, 73, 92, 13, 86, 52, 17, 77, 4, 89, 55, 40],  # noqa: E501
+        [4, 52, 8, 83, 97, 35, 99, 16, 7, 97, 57, 32, 16, 26, 26, 79, 33, 27, 98, 66],  # noqa: E501
+        [88, 36, 68, 87, 57, 62, 20, 72, 3, 46, 33, 67, 46, 55, 12, 32, 63, 93, 53, 69],  # noqa: E501
+        [4, 42, 16, 73, 38, 25, 39, 11, 24, 94, 72, 18, 8, 46, 29, 32, 40, 62, 76, 36],  # noqa: E501
+        [20, 69, 36, 41, 72, 30, 23, 88, 34, 62, 99, 69, 82, 67, 59, 85, 74, 4, 36, 16],  # noqa: E501
+        [20, 73, 35, 29, 78, 31, 90, 1, 74, 31, 49, 71, 48, 86, 81, 16, 23, 57, 5, 54],  # noqa: E501
+        [1, 70, 54, 71, 83, 51, 54, 69, 16, 92, 33, 48, 61, 43, 52, 1, 89, 19, 67, 48],  # noqa: E501
     ]
     # fmt: on
 
@@ -306,35 +328,26 @@ def euler11():
         return x * y
 
     dimension = 20
-    grid = [given[dimension * i : dimension * i + dimension] for i in range(20)]
 
     horiz_max = max(
-        [
-            functools.reduce(multiply, grid[i][j : j + 4])
-            for i in range(dimension)
-            for j in range(dimension - 3)
-        ]
+        functools.reduce(multiply, grid[i][j : j + n])
+        for i in range(dimension)
+        for j in range(dimension - n + 1)
     )
     vert_max = max(
-        [
-            functools.reduce(multiply, [grid[i + i_hat][j] for i_hat in range(4)])
-            for i in range(dimension - 3)
-            for j in range(dimension)
-        ]
+        functools.reduce(multiply, [grid[i + i_hat][j] for i_hat in range(n)])
+        for i in range(dimension - n + 1)
+        for j in range(dimension)
     )
     diag_r_max = max(
-        [
-            functools.reduce(multiply, [grid[i + d][j + d] for d in range(4)])
-            for i in range(dimension - 3)
-            for j in range(dimension - 3)
-        ]
+        functools.reduce(multiply, [grid[i + d][j + d] for d in range(n)])
+        for i in range(dimension - n + 1)
+        for j in range(dimension - n + 1)
     )
     diag_l_max = max(
-        [
-            functools.reduce(multiply, [grid[i + d][j - d] for d in range(4)])
-            for i in range(dimension - 3)
-            for j in range(dimension - 1, 2, -1)
-        ]
+        functools.reduce(multiply, [grid[i + d][j - d] for d in range(n)])
+        for i in range(dimension - n + 1)
+        for j in range(dimension - 1, n - 2, -1)
     )
 
     return max(horiz_max, vert_max, diag_r_max, diag_l_max)
@@ -840,10 +853,14 @@ def euler22() -> int:
         # all names are capital, so use 64 in ascii value
         return sum([ord(c) - 64 for c in s if c != '"'])
 
+    # since it runs thru all characters, remove excess white space!
     with open("data/p022_names.txt") as f:
-        data = f.read()  # it is one line
+        data = f.read().strip()  # it is one line
     data = sorted(data.split(","))
-    return sum([i * name_val(name) for i, name in enumerate(data, start=1)])
+    return sum(i * name_val(name) for i, name in enumerate(data, start=1))
+
+
+print(euler22())
 
 
 def euler23(n=28123) -> int:
@@ -1115,3 +1132,41 @@ def euler28(n: int = 1001) -> int:
         for i in range(4):
             total += dim * dim - i * (dim - 1)
     return total
+
+
+def euler29(n: int = 100) -> int:
+    """Distinct powers
+
+    Create all possible combinations of a ** b for 2 <= a, b <= n
+    Keep only distinct terms, and return the number of terms
+    e.g. n = 3: 2 ** 2 = 4, 2 ** 3 = 8, 3 ** 2 = 9, 3 ** 3 = 27, euler29(3) -> 4
+
+    Parameters
+    ----------
+    n : int, optional
+        maximum value for a and b in power combination, by default 100
+
+    Returns
+    -------
+    int
+        number of distinct terms
+    """
+    return len({a ** b for a in range(2, n + 1) for b in range(2, n + 1)})
+
+
+def euler30() -> int:
+    """Digit fifth powers
+
+    Find the sum of all the numbers that can be written
+    as the sum of fifth powers of their digits.
+    e.g. for power of four there are
+        1634 = 14 + 64 + 34 + 44
+        8208 = 84 + 24 + 04 + 84
+        9474 = 94 + 44 + 74 + 44
+    with a sum of 19316
+
+    Returns
+    -------
+    int
+    """
+    return 0

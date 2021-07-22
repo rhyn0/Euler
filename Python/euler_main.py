@@ -29,6 +29,8 @@ functions = {
     "25": eu.euler25,
     "26": eu.euler26,
     "27": eu.euler27,
+    "28": eu.euler28,
+    "29": eu.euler29,
 }
 # https://projecteuler.net/
 
