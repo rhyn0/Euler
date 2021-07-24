@@ -51,3 +51,7 @@ $RECYCLE.BIN/
 
 # Python Cache files
 *.pyc
+
+# Executable files created
+*.exe
+*.out

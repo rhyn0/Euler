@@ -1,15 +1,22 @@
+CC 			= gcc
 CCFLAGS		= -pedantic -Wall -Werror -g -std=c99
+OBJECTS 	= $(wildcard *.o)
 
 all: main tests
 
 main: objects
-	gcc -o main $(CCFLAGS) euler.o
+	$(CC) -o ../main $(CCFLAGS) *.o
 
 objects:
-	gcc -c $(CCFLAGS) C/euler.c
+	$(CC) -c $(CCFLAGS) main.c euler.c
 
 tests:
-	gcc -o tests $(CCFLAGS) C/euler_test.c
+	$(CC) -o ../tests $(CCFLAGS) euler_test.c
 
-clean:
-	rm -f *.o main tests
+clean: clean_main clean_tests
+
+clean_main:
+	rm 
+
+clean_tests:
+	rm *.o ../tests

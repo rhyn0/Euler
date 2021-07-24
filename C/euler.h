@@ -3,7 +3,7 @@
 
 int euler1(int n);
 int euler2(int n);
-int euler3(int n);
+long int euler3(long long int n);
 int euler4(int n);
 int euler5(int n);
 int euler6(int n);
