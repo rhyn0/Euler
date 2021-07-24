@@ -1,22 +1,33 @@
+SRC_DIR		= src
+OBJ_DIR		= obj
+BIN_DIR		= ..
+EXE			= $(BIN_DIR)\\main
+TESTS 		= $(BIN_DIR)\\tests
+SRC 		= $(wildcard $(SRC_DIR)/*.c)
+INCLUDES	= $(wildcard include/*.h)
 CC 			= gcc
-CCFLAGS		= -pedantic -Wall -Werror -g -std=c99
-OBJECTS 	= $(wildcard *.o)
+CFLAGS		= -pedantic -Wall -Wextra -Werror -g -std=c17
+CPPFLAGS	= -Iinclude -MMD -MP
+LDFLAGS 	= -Llib
+LDLIBS		= -lm
 
-all: main tests
+all: $(EXE) $(TESTS)
 
-main: objects
-	$(CC) -o ../main $(CCFLAGS) *.o
+.PHONY: all
 
-objects:
-	$(CC) -c $(CCFLAGS) main.c euler.c
+$(EXE): obj/euler.o obj/main.o
+	$(CC) -o $@ $(LDFLAGS) $^ $(LDLIBS)
 
-tests:
-	$(CC) -o ../tests $(CCFLAGS) euler_test.c
+$(TESTS): obj/euler_test.o obj/euler.o
+	$(CC) -o $@ $(LDFLAGS) $^ $(LDLIBS)
 
-clean: clean_main clean_tests
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
-clean_main:
-	rm 
+$(OBJ_DIR):
+	mkdir -p $@
 
-clean_tests:
-	rm *.o ../tests
+clean:
+	@$(RM) -rv $(OBJ_DIR)
+
+-include $(OBJ:.o=.d)

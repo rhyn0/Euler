@@ -48,6 +48,7 @@ $RECYCLE.BIN/
 
 # GNU C object files
 *.o
+*.d
 
 # Python Cache files
 *.pyc
