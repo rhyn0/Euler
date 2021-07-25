@@ -163,9 +163,8 @@ def euler7(n=10001):
     prime_list[1] = 3
     index = 2
     while index < n:
-        i = (
-            prime_list[index - 1] + 2
-        )  # start at most recent prime, increase by 2 to check only odds
+        i = prime_list[index - 1] + 2
+        # start at most recent prime, increase by 2 to check only odds
         while 1:
             prime = True
             for j in range(1, index):
@@ -859,9 +858,6 @@ def euler22() -> int:
     return sum(i * name_val(name) for i, name in enumerate(data, start=1))
 
 
-print(euler22())
-
-
 def euler23(n=28123) -> int:
     """Non-abundant sums
 
@@ -1153,19 +1149,36 @@ def euler29(n: int = 100) -> int:
     return len({a ** b for a in range(2, n + 1) for b in range(2, n + 1)})
 
 
-def euler30() -> int:
+def euler30(num: int = 5) -> int:
     """Digit fifth powers
 
     Find the sum of all the numbers that can be written
     as the sum of fifth powers of their digits.
     e.g. for power of four there are
-        1634 = 14 + 64 + 34 + 44
-        8208 = 84 + 24 + 04 + 84
-        9474 = 94 + 44 + 74 + 44
+        1634 = 1^4 + 6^4 + 3^4 + 4^4
+        8208 = 8^4 + 2^4 + 0^4 + 8^4
+        9474 = 9^4 + 4^4 + 7^4 + 4^4
     with a sum of 19316
 
     Returns
     -------
     int
     """
-    return 0
+    # initially have to find an upper bound, assuming a number is made of all 9
+    # this gives us a 'd' digit number of value d*9^5. 9^5 is a 59049.
+    # This finds a 'd', that is in the range of 'd' digit numbers.
+    d = 1
+    while not (
+        d - 1 <= math.log10(d) + num * math.log10(9) < d
+    ):
+        d += 1
+    digit_power_sum = 0
+    powers_list = [i ** num for i in range(10)]
+    # a 1 digit number can't equal itself after raising sole digit to fifth
+    for num in range(10, d * 9 ** num):
+        # ascii value of '0' is 48
+        # ? tempting to avoid string conversion and do a while loop here
+        if num == sum(powers_list[ord(x) - 48] for x in str(num)):
+            digit_power_sum += num
+    return digit_power_sum
+

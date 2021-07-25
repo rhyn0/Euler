@@ -2,13 +2,14 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <limits.h>
 
 #include "euler.h"
 
 bool isPrime(int num)
 {
   int i, sqt = (int)sqrt(num);
-  if (num == 1)
+  if (num <= 1) // there are no conventional prime negative numbers
     return false;
   for (i = 2; i <= sqt; i++)
   {
@@ -276,6 +277,21 @@ int euler7(int num)
   {
     num = 10001;
   }
+  /**
+   * An alternative being 
+   * 
+   * int primeCount = 2;
+   * int i = 3;
+   * while (primeCount < num)
+   * {
+   *  i += 2;
+   *  if (isPrime(i))
+   *  {
+   *    primeCount++;
+   *  }
+   * }
+   * return i;
+   */
   // variable based static allocation not allowed in previous standards
   int primeList[num], index;
   int i, j;
@@ -287,14 +303,12 @@ int euler7(int num)
   while (index < num)
   {
     i = primeList[index - 1] + 2; // only check odd numbers
-    printf("checking %d\n", i);
-    printf("checking pow %d\n", (int)pow(i, 0.5));
     while (true)
     {
+      prime = true;
       for (j = 1; j < index; j++) // start at 1, since odds aren't divisible by 2
       {
-        printf("i:%d %% %d == %d\n", i, primeList[j], i % primeList[j] == 0);
-        if (primeList[j] > (int)pow(i, 0.5))
+        if (primeList[j] > sqrt(i)) // ! pow(i, 0.5) causes bad behavior, same for 1/2
         {
           break; // missed the proper divisor on lesser end, which means prime
         }
@@ -303,7 +317,6 @@ int euler7(int num)
           prime = false; // divisible by any number, so composite (not prime)
           break;
         }
-        printf("\tend of for loop\n");
       }
       if (prime)
       {
@@ -318,4 +331,51 @@ int euler7(int num)
     }
   }
   return primeList[num - 1];
+}
+
+/**
+ * @brief Greatest number of n adjacent integers.
+ * 
+ * Given a 1000 digit number, find the greatest product of n adjacent digits.
+ * Note: Returns a number that exceeds 32 bytes, check your long long widths
+ * 
+ * @param num - default 13
+ * @return long long int 
+ */
+long long int euler8(int num)
+{
+  if (num <= 0)
+    num = 13;
+  const char *given = "73167176531330624919225119674426574742355349194934"
+                      "96983520312774506326239578318016984801869478851843"
+                      "85861560789112949495459501737958331952853208805511"
+                      "12540698747158523863050715693290963295227443043557"
+                      "66896648950445244523161731856403098711121722383113"
+                      "62229893423380308135336276614282806444486645238749"
+                      "30358907296290491560440772390713810515859307960866"
+                      "70172427121883998797908792274921901699720888093776"
+                      "65727333001053367881220235421809751254540594752243"
+                      "52584907711670556013604839586446706324415722155397"
+                      "53697817977846174064955149290862569321978468622482"
+                      "83972241375657056057490261407972968652414535100474"
+                      "82166370484403199890008895243450658541227588666881"
+                      "16427171479924442928230863465674813919123162824586"
+                      "17866458359124566529476545682848912883142607690042"
+                      "24219022671055626321111109370544217506941658960408"
+                      "07198403850962455444362981230987879927244284909188"
+                      "84580156166097919133875499200524063689912560717606"
+                      "05886116467109405077541002256983155200055935729725"
+                      "71636269561882670428252483600823257530420752963450";
+  long long int max = 0, product; // answer exceeds 32 bytes
+  int i, j;
+  for (i = 0; i < (int)strlen(given) - num; i++)
+  {
+    product = 1;
+    for (j = 0; j < num; j++)
+    {
+      product *= (given[i + j] - '0');
+    }
+    max = (product > max) ? product : max;
+  }
+  return max;
 }

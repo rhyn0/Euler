@@ -75,6 +75,18 @@ int main(int argc, char **argv)
         printf("Euler 5 is %d\n", euler5(addlArgs));
         break;
 
+    case 6:
+        printf("Euler 6 is %d\n", euler6(addlArgs));
+        break;
+
+    case 7:
+        printf("Euler 7 is %d\n", euler7(addlArgs));
+        break;
+
+    case 8:
+        printf("Euler 8 is %lld\n", euler8(addlArgs));
+        break;
+
     default:
         printf("That problem is not available yet.");
         break;

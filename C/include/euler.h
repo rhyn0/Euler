@@ -8,7 +8,7 @@ int euler4(int n);
 int euler5(int n);
 int euler6(int n);
 int euler7(int n);
-int euler8(int n);
+long long int euler8(int n);
 int euler9(int n);
 int euler10(int n);
 int euler11(int n);
