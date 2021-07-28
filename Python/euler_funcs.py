@@ -277,7 +277,7 @@ def euler10(n=2000000):
         if sieve[i] == 0:
             for j in range(2 * i * (i + 1), bound + 1, 2 * i + 1):
                 sieve[j] = 1
-    return 2 + sum([(2 * x) + 1 for x in range(len(sieve)) if sieve[x] == 0])
+    return 2 + sum((2 * x) + 1 for x in range(len(sieve)) if sieve[x] == 0)
 
 
 def euler11(n: int = 4) -> int:
@@ -606,7 +606,7 @@ def euler16(n=1000) -> int:
     -------
     int
     """
-    return sum([int(c) for c in str(2 ** n)])
+    return sum(int(c) for c in str(2 ** n))
 
 
 def euler17(n=1000) -> int:
@@ -756,11 +756,9 @@ def euler19(n: int = 2000) -> int:
 
     # just use a datetime module to find what weekday the first of each month was
     return sum(
-        [
-            datetime.date(year, month, 1).isoweekday() == 7
-            for year in range(1901, n + 1)
-            for month in range(1, 13)
-        ]
+        datetime.date(year, month, 1).isoweekday() == 7
+        for year in range(1901, n + 1)
+        for month in range(1, 13)
     )
 
 
@@ -779,7 +777,7 @@ def euler20(n=100) -> int:
     -------
     int
     """
-    return sum([int(s) for s in str(math.factorial(n))])
+    return sum(int(s) for s in str(math.factorial(n)))
 
 
 def euler21(n=10000) -> int:
@@ -813,11 +811,9 @@ def euler21(n=10000) -> int:
                 start += root
                 root -= 1
             memo[num] = start + sum(
-                [
-                    s + num // s
-                    for s in range(2, int(math.sqrt(num)) + 1)
-                    if num % s == 0
-                ]
+                (s + num // s)
+                for s in range(2, int(math.sqrt(num)) + 1)
+                if num % s == 0
             )
         return memo[num]
 
@@ -825,11 +821,9 @@ def euler21(n=10000) -> int:
     # keep nums if the sum of the divisors of that sum is equal to the number
     # d(d(a)) = a and we want all 'a' that satisfy that
     return sum(
-        [
-            a
-            for a in range(2, n)
-            if sum_divisors(sum_divisors(a)) == a and sum_divisors(a) != a
-        ]
+        a
+        for a in range(2, n)
+        if sum_divisors(sum_divisors(a)) == a and sum_divisors(a) != a
     )
 
 
@@ -849,7 +843,7 @@ def euler22() -> int:
 
     def name_val(s: str) -> int:
         # all names are capital, so use 64 in ascii value
-        return sum([ord(c) - 64 for c in s if c != '"'])
+        return sum(ord(c) - 64 for c in s if c != '"')
 
     # since it runs thru all characters, remove excess white space!
     with open("data/p022_names.txt") as f:
@@ -908,7 +902,7 @@ def euler23(n=28123) -> int:
         abund[i] + abund[j] for i in range(len(abund)) for j in range(i + 1)
     }
 
-    return sum([s for s in range(n + 1) if s not in abundant_sum])
+    return sum(s for s in range(n + 1) if s not in abundant_sum)
 
 
 def euler24(n=1000000) -> int:

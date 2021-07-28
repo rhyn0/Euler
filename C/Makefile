@@ -9,7 +9,7 @@ MAIN_OBJ	= $(OBJ_DIR)/main.o
 TEST_OBJ	= $(OBJ_DIR)/euler_test.o
 OTHER_OBJ	= $(OBJ_DIR)/euler.o
 CC 			= gcc
-CFLAGS		= -Wall -Wextra -Werror -g -std=c11 -pedantic 
+CFLAGS		= -Wall -Wextra -Werror -g -std=c11 -pedantic
 CPPFLAGS	= -Iinclude -MMD -MP
 LDFLAGS 	= -Llib
 LDLIBS		= -lm

@@ -264,12 +264,12 @@ int euler6(int num)
 
 /**
  * @brief Ten Thousandth and First prime number
- * 
+ *
  * Iteratively find each prime number until we reach the nth one.
  * Stores all previous prime numbers which speeds up calculations a bit.
- * 
+ *
  * @param num - default 10001
- * @return int 
+ * @return int
  */
 int euler7(int num)
 {
@@ -278,8 +278,8 @@ int euler7(int num)
     num = 10001;
   }
   /**
-   * An alternative being 
-   * 
+   * An alternative being
+   *
    * int primeCount = 2;
    * int i = 3;
    * while (primeCount < num)
@@ -335,12 +335,12 @@ int euler7(int num)
 
 /**
  * @brief Greatest number of n adjacent integers.
- * 
+ *
  * Given a 1000 digit number, find the greatest product of n adjacent digits.
  * Note: Returns a number that exceeds 32 bytes, check your long long widths
- * 
+ *
  * @param num - default 13
- * @return long long int 
+ * @return long long int
  */
 long long int euler8(int num)
 {
