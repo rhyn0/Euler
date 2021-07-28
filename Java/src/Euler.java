@@ -33,8 +33,13 @@ public class Euler {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         String input = null;
-        int problem;
-        while (true) {
+        int problem = 0;
+        int retries = 0;
+        do {
+            if (retries > 0) {
+                System.out.println("That is not an available problem at this time. Enter 'h' for more info.");
+            }
+            retries++;
             System.out.print("Which Euler Problem would you like the answer to (h for more info) ");
             input = in.nextLine();
             if (input.equals("h")) {
@@ -43,14 +48,13 @@ public class Euler {
             }
             try {
                 problem = Integer.parseInt(input);
-                if (1 <= problem && problem <= problemMax) {
-                    break;
-                } else {
-                    System.out.println("That is not an available problem at this time. Enter 'h' for more info.");
-                }
             } catch (NumberFormatException e) {
                 System.out.println("That was not an integer representing a problem. Please input an integer.");
             }
+        } while (!(1 <= problem && problem <= problemMax) && retries < 3);
+        if (retries == 3) {
+            System.out.println("Input failure too many times. Exiting...");
+            return;
         }
         switch (problem) {
             case 1:

@@ -425,6 +425,21 @@ class TestEuler30(unittest.TestCase):
         self.assertEqual(euler.euler30(4), 19316)
 
 
+class TestEuler31(unittest.TestCase):
+    # this function won't take a param, due to specifically calculated limit
+    def setUp(self) -> None:
+        self.num = euler.euler31()
+
+    def test_euler31_type(self):
+        self.assertEqual(type(self.num), int)
+
+    def test_euler31_val(self):
+        self.assertEqual(self.num, 73682)
+
+    def test_euler31_ex(self):
+        self.assertEqual(euler.euler31(10), 11)
+
+
 def run_classes(classes: List):
     # Run only the tests in the specified classes
 

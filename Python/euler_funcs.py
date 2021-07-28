@@ -1168,9 +1168,7 @@ def euler30(num: int = 5) -> int:
     # this gives us a 'd' digit number of value d*9^5. 9^5 is a 59049.
     # This finds a 'd', that is in the range of 'd' digit numbers.
     d = 1
-    while not (
-        d - 1 <= math.log10(d) + num * math.log10(9) < d
-    ):
+    while not (d - 1 <= math.log10(d) + num * math.log10(9) < d):
         d += 1
     digit_power_sum = 0
     powers_list = [i ** num for i in range(10)]
@@ -1182,3 +1180,37 @@ def euler30(num: int = 5) -> int:
             digit_power_sum += num
     return digit_power_sum
 
+
+def euler31(num: int = 200) -> int:
+    """Coin Sums
+
+    In the UK there are 8 coins in circulation:
+        1p, 2p, 5p, 10p, 20p, 50p, 100p, 200p
+    It is possible to make 200p in the following way:
+        1×100p + 1×50p + 2×20p + 1×5p + 1×2p + 3×1p
+    Return how many different ways there are to make num using any number of coins
+
+    Parameters
+    ----------
+    num : int, optional
+        monetary amount to make in pence, by default 200
+
+    Returns
+    -------
+    int
+        number of ways to make num pence
+    """
+    # * thought is to do a dynamic programming unbound knapsack
+    # * where the table is 8 rows by num columns, 8 representing each coin
+    coins = [1, 2, 5, 10, 20, 50, 100, 200]
+    dp = [[1 for _ in range(num + 1)] for _ in range(len(coins))]
+    # with only 1 pence, can make everything in only 1 way
+    # and only 1 way to make 0 with any amount of coins
+    for i in range(1, len(dp)):
+        for j in range(1, num + 1):
+            if coins[i] > j:
+                dp[i][j] = dp[i - 1][j]
+            else:
+                dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i]]
+
+    return dp[-1][-1]
