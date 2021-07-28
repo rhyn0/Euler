@@ -1196,15 +1196,25 @@ def euler31(num: int = 200) -> int:
     """
     # * thought is to do a dynamic programming unbound knapsack
     # * where the table is 8 rows by num columns, 8 representing each coin
-    coins = [1, 2, 5, 10, 20, 50, 100, 200]
-    dp = [[1 for _ in range(num + 1)] for _ in range(len(coins))]
-    # with only 1 pence, can make everything in only 1 way
-    # and only 1 way to make 0 with any amount of coins
-    for i in range(1, len(dp)):
-        for j in range(1, num + 1):
-            if coins[i] > j:
-                dp[i][j] = dp[i - 1][j]
-            else:
-                dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i]]
+    # coins = [1, 2, 5, 10, 20, 50, 100, 200]
+    # dp = [[1 for _ in range(num + 1)] for _ in range(len(coins))]
+    # # with only 1 pence, can make everything in only 1 way
+    # # and only 1 way to make 0 with any amount of coins
+    # for i in range(1, len(dp)):
+    #     for j in range(1, num + 1):
+    #         if coins[i] > j:
+    #             dp[i][j] = dp[i - 1][j]
+    #         else:
+    #             dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i]]
 
-    return dp[-1][-1]
+    # return dp[-1][-1]
+    # this relationship only applies for values greater than the current coin
+    ways_arr = [0 for _ in range(num + 1)]
+    coins = [1, 2, 5, 10, 20, 50, 100, 200]
+    ways_arr[0] = 1
+    for i in range(len(coins)):
+        if coins[i] > num:
+            break  # avoid index error for small num
+        for j in range(coins[i], num + 1):
+            ways_arr[j] = ways_arr[j] + ways_arr[j - coins[i]]
+    return ways_arr[-1]

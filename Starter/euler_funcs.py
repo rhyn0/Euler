@@ -114,7 +114,7 @@ def euler10(n=2000000):
     pass
 
 
-def euler11():
+def euler11(n=4):
     """
     Largest product in a grid,
     """
