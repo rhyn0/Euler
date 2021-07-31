@@ -1,7 +1,6 @@
 import math
 import datetime
 import functools
-import itertools
 
 
 def euler1(n=1000):
