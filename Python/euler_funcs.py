@@ -1,6 +1,7 @@
 import math
 import datetime
 import functools
+import itertools
 
 
 def euler1(n=1000):
@@ -1218,3 +1219,37 @@ def euler31(num: int = 200) -> int:
         for j in range(coins[i], num + 1):
             ways_arr[j] = ways_arr[j] + ways_arr[j - coins[i]]
     return ways_arr[-1]
+
+
+def euler32(num: int = 9) -> int:
+    """Pandigital Product
+
+    A pandigital number will be defined as an n-digit numbers
+    that uses 1 to n exactly once. i.e. 12345 is a 5 digit pandigital number.
+    Find sum of products that are pandigital
+    across multiplicand, multiplier, and product.
+
+    Parameters
+    ----------
+    num : int, optional
+        n digit number, by default 9
+
+    Returns
+    -------
+    int
+    """
+    # there are multiple ways to have m * n of varying size
+    # that will create a 9 digit combo
+    # need 1 digit x 4 digit, and 2 digit x 3 digit
+    # make sure not to repeat numbers, and the multiplier is limited by 10000 / m
+    product_set = set()
+    for m in range(2, 100):  # skip 1 for identity problem
+        n_start = 123 if m > 9 else 1234
+        n_end = 10000 // (m + 1)
+        for n in range(n_start, n_end):
+            if "".join(sorted(str(n) + str(m) + str(n * m))) == "123456789":
+                product_set.add(n * m)
+    return sum(product_set)
+
+
+print(euler32())
