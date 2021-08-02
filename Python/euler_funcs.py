@@ -1,6 +1,7 @@
 import math
 import datetime
 import functools
+import decimal
 
 
 def euler1(n=1000):
@@ -1241,14 +1242,65 @@ def euler32(num: int = 9) -> int:
     # that will create a 9 digit combo
     # need 1 digit x 4 digit, and 2 digit x 3 digit
     # make sure not to repeat numbers, and the multiplier is limited by 10000 / m
+    # todo: come up with n-digit relation to multiplicand and multiplier
     product_set = set()
     for m in range(2, 100):  # skip 1 for identity problem
         n_start = 123 if m > 9 else 1234
         n_end = 10000 // (m + 1)
         for n in range(n_start, n_end):
-            if "".join(sorted(str(n) + str(m) + str(n * m))) == "123456789":
+            if "".join(sorted(str(n) + str(m) + str(n * m))) == "".join(
+                str(i) for i in range(1, num + 1)
+            ):
                 product_set.add(n * m)
     return sum(product_set)
 
 
-print(euler32())
+def euler33() -> int:
+    """Digit cancelling fractions
+
+    The fraction 49/98 is a curious fraction,
+    as an inexperienced mathematician in attempting to simplify it may incorrectly
+    believe that 49/98 = 4/8, which is correct, is obtained by cancelling the 9s.
+    Cases where we cancel 0s is considered trivial. There are 4 non-trivial
+    examples of this type of fraction, less than 1 in value, and of 2 digits in
+    numerator and denominator. Return the denominator of their product in lowest
+    common terms.
+
+    Returns
+    -------
+    int
+    """
+
+    def digit_cancel(numer: int, denom: int) -> bool:
+        nume_str = str(numer)
+        denom_str = str(denom)
+        # since this only applies for 2 digit numerator and denom
+        if "0" in nume_str and "0" in denom_str:
+            return False
+        try:
+            if nume_str[0] in denom_str:
+                return (
+                    int(nume_str[1]) / int(denom_str.replace(nume_str[0], "", 1))
+                ) == numer / denom
+            return (
+                int(nume_str[0]) / int(denom_str.replace(nume_str[1], "", 1))
+                == numer / denom
+            )
+        except ZeroDivisionError:
+            return False
+
+    # need to use Decimal since float in python has some weird behavior
+    decimal.getcontext().prec = 28
+    product = functools.reduce(
+        lambda x, y: x * y,
+        [
+            decimal.Decimal(i) / decimal.Decimal(j)
+            for i in range(11, 100)
+            for j in range(i + 1, 100)
+            if digit_cancel(i, j)
+        ],
+    )
+    return product.as_integer_ratio()[1]
+
+
+print(euler33())
