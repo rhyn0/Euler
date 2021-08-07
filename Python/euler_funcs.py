@@ -1289,7 +1289,7 @@ def euler33() -> int:
         except ZeroDivisionError:
             return False
 
-    # need to use Decimal since float in python has some weird behavior
+    # need to use Decimal since float in python has bad behavior at this precision
     decimal.getcontext().prec = 28
     product = functools.reduce(
         lambda x, y: x * y,
@@ -1301,6 +1301,3 @@ def euler33() -> int:
         ],
     )
     return product.as_integer_ratio()[1]
-
-
-print(euler33())
