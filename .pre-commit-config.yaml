@@ -7,6 +7,8 @@ repos:
     rev: v4.0.1
     hooks:
       - id: check-ast
+      - id: check-docstring-first
+      - id: check-merge-conflict
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
@@ -20,7 +22,7 @@ repos:
       - id: black
         language_version: python3
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.23.0
+    rev: v2.23.3
     hooks:
       - id: pyupgrade
         args: [--py38-plus]
@@ -40,5 +42,5 @@ repos:
             "--statistics",
             "--max-complexity=12",
             "--extend-ignore=E203",
-            "--select=C,E,F,W,B,B903",
+            "--select=C,E,F,W,B,B902,B903",
           ]

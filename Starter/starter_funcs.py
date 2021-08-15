@@ -1,8 +1,6 @@
 import math
 import datetime
 
-from numpy import s_
-
 
 def euler1(n=1000):
     """

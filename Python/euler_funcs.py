@@ -1301,3 +1301,38 @@ def euler33() -> int:
         ],
     )
     return product.as_integer_ratio()[1]
+
+
+def euler34() -> int:
+    """Digit Factorials
+
+    Find the sum of all numbers which are equal to the sum of
+    the factorial of their digits.
+    E.g. 145 is such a number as 1! + 4! + 5! = 145
+
+    Returns
+    -------
+    int
+    """
+    # * An interesting fact here is that these are called Factorions
+    # https://mathworld.wolfram.com/Factorion.html
+    def fact_sum(num: int):
+        fact_sum = 0
+        fact_list = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880]
+        while num > 0:
+            fact_sum += fact_list[num % 10]
+            num //= 10
+        return fact_sum
+
+    # ! create a generator for combinations of numbers, double check 101 - 110
+
+    # a d digit number must fulfill this to be our bound: d*9! < 10**(d-1)
+    # assume we create a d digit number of all 9s
+    # 7 * 9! is less than seven 9's (9999999)
+    output = 0
+    # since single digit numbers are not a sum of factorials, can skip
+    for start in range(10, 9999999):
+        if fact_sum(start) == start:
+            output += start
+        start += 1
+    return output
