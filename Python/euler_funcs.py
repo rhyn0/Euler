@@ -1336,3 +1336,57 @@ def euler34() -> int:
             output += start
         start += 1
     return output
+
+
+def euler35(n: int = 1000000) -> int:
+    """Circular Primes
+
+    The number, 197, is called a circular prime because all
+    rotations of the digits: 197, 971, and 719, are themselves prime.
+    There are thirteen such primes below 100:
+    2, 3, 5, 7, 11, 13, 17, 31, 37, 71, 73, 79, and 97.
+    Return the number of circular primes under n.
+
+    Parameters
+    ----------
+    n : int
+        Upper limit to search
+
+    Returns
+    -------
+    int
+    """
+
+    def rotations_number(num: int) -> list[int]:
+        if num < 10:
+            return [num]
+        num_s = str(num)
+        return [int(num_s[i + 1 :] + num_s[: i + 1]) for i in range(len(num_s))]
+
+    return sum(all(is_prime(x) for x in rotations_number(i)) for i in range(n))
+
+
+def euler36(n: int = 1000000) -> int:
+    """Double-base palindromes
+
+    The decimal number, 585 = 10010010012 (binary), is palindromic in both bases.
+    Find the sum of all numbers, less than n,
+    which are palindromic in base 10 and base 2.
+
+    Parameters
+    ----------
+    n : int, optional
+        limit to find numbers, by default 1000000
+
+    Returns
+    -------
+    int
+    """
+
+    def is_palindrome(num: str) -> bool:
+        strlen = len(num)
+        return all(num[i] == num[strlen - 1 - i] for i in range(strlen // 2))
+
+    return sum(
+        i for i in range(n) if is_palindrome(str(i)) and is_palindrome(bin(i)[2:])
+    )
