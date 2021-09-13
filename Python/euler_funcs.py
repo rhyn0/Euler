@@ -1390,3 +1390,40 @@ def euler36(n: int = 1000000) -> int:
     return sum(
         i for i in range(n) if is_palindrome(str(i)) and is_palindrome(bin(i)[2:])
     )
+
+
+def euler37(n: int = 11) -> int:
+    """Truncatable primes
+
+    The number 3797 has an interesting property. Being prime itself, it is possible
+    to continuously remove digits from left to right, and remain prime at
+    each stage: 3797, 797, 97, and 7. Similarly we can work from right to
+    left: 3797, 379, 37, and 3.
+    Find the sum of the only eleven primes
+    that are both truncatable from left to right and right to left.
+    NOTE: 2, 3, 5, and 7 are not considered to be truncatable primes.
+
+    Parameters
+    ----------
+    n : int, optional
+        total number to find, by default 11
+
+    Returns
+    -------
+    int
+    """
+
+    def truncate(num: str) -> list[int]:
+        # return list of all numbers that are truncated forms of input num
+        return [int(num[: i + 1]) for i in range(len(num))] + [
+            int(num[i:]) for i in range(len(num))
+        ]
+
+    count, trunc_sum = 0, 0
+    start = 11
+    while count < n:
+        if all(is_prime(x) for x in truncate(str(start))):
+            trunc_sum += start
+            count += 1
+        start += 1
+    return trunc_sum
