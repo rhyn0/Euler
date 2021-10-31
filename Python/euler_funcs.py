@@ -747,8 +747,8 @@ def euler19(n: int = 2000) -> int:
 
     Parameters
     ----------
-    n : str, optional
-        string of format 'YYYY' to represent date, by default "2000"
+    n : int, optional
+        int of format 'YYYY' to represent date, by default 2000
 
     Returns
     -------
@@ -1427,3 +1427,72 @@ def euler37(n: int = 11) -> int:
             count += 1
         start += 1
     return trunc_sum
+
+
+def euler38() -> int:
+    """Pandigital Multiples
+
+    By concatenating each product we get the 1 to 9 pandigital, 192384576.
+    We will call 192384576 the concatenated product of 192 and (1,2,3)
+    The same can be achieved by starting with 9 and multiplying by 1,2,3,4 and 5,
+    giving the pandigital, 918273645, which is the concatenated product of 9 and
+    (1,2,3,4,5). Return the largest 1 to 9 pandigital 9-digit number that can be
+    created by concatenating the products of a number and (1, 2, .. n)
+
+    Returns
+    -------
+    int
+    """
+    # * Can limit the range to search over, since to get all 9 unique digits
+    # * has to start with 9, and multiply out to get a 9-digit number
+    # ! So only 4 digit starting values can do this.
+    import datetime
+
+    def is_pandigital(num: str) -> bool:
+        return len(num) == 9 and "".join(sorted(num)) == "123456789"
+
+    largest_pandigital = 0
+    for val in range(9000, 10000):
+        str_num, n = "", 1
+        while len(str_num) < 9:
+            str_num += str(val * n)
+            n += 1
+        if is_pandigital(str_num):
+            largest_pandigital = max(largest_pandigital, int(str_num))
+            # creation = (val, list(range(1, n + 1)))
+        val += 1
+    return largest_pandigital
+
+
+def euler39(num: int = 1000) -> int:
+    """Integer Right Triangles
+
+    If n is the perimeter of a right angle triangle with integral length sides,
+    {a,b,c}, there are exactly three solutions for n = 120.
+        {20,48,52}, {24,45,51}, {30,40,50}
+    For which value of n ≤ 1000, is the number of solutions maximized?
+
+    Parameters
+    ----------
+    n : int
+        maximum perimeter, defaults to 1000
+
+    Returns
+    -------
+    int
+        perimeter value that maximizes the number of right triangles
+    """
+    # so we know: a^2 + b^2 = c^2
+    # and also: a + b + c == p -> c = p - a - b
+    # and plugging that into the first, yields b = (p^2 - 2pa) / (2p - 2a)
+    # and perimeters for a right triangle must be even
+    count_max, perim_max = 0, 0
+    for p in range(2, num + 1, 2):
+        count = 0
+        for a in range(2, p // 3):
+            if p * (p - 2 * a) % (2 * (p - a)) == 0:
+                count += 1
+        if count > count_max:
+            perim_max = p
+            count_max = count
+    return perim_max

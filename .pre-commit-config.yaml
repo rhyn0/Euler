@@ -27,7 +27,7 @@ repos:
       - id: pyupgrade
         args: [--py38-plus]
   - repo: https://github.com/PyCQA/flake8.git
-    rev: 3.9.2
+    rev: 4.0.0
     hooks:
       - id: flake8
         exclude: ^(Starter|Java|data|C)
@@ -35,11 +35,10 @@ repos:
         language_version: python3
         args:
           [
-            "--max-line-length=84",
-            "--max-doc-length=84",
+            "--max-line-length=88",
             "--show-source",
             "--statistics",
             "--max-complexity=12",
-            "--extend-ignore=E203",
-            "--select=C,E,F,W,B,B902,B903",
+            "--extend-ignore=E203,F401,W503",
+            "--extend-select=C,E,F,W,B,B902,B903",
           ]
